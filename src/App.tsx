@@ -16,9 +16,6 @@ import {
 import { styled } from "@mui/material/styles";
 import { format } from "date-fns";
 
-// Import the jingle mp3 file
-import jingle from "./assets/CryptKeeper.mp3";
-
 // Define interfaces
 interface ChecklistItem {
   name: string;
@@ -248,9 +245,6 @@ const App: React.FC = () => {
     );
   }, [checklist]);
 
-  // Create an Audio object for the jingle
-  const jingleAudio = new Audio(jingle);
-
   // Function to spin the wheel
   const spinWheel = (): void => {
     if (spinning) return;
@@ -259,7 +253,7 @@ const App: React.FC = () => {
     setSelectedName(null);
 
     // Play the jingle
-    jingleAudio.play();
+    (document.getElementById("sound-audio") as HTMLAudioElement).play();
 
     // Calculate random rotation (5-10 full spins plus random position)
     const spinCount = 5 + Math.random() * 5;
@@ -283,10 +277,6 @@ const App: React.FC = () => {
 
       setSelectedName(NAMES[actualIndex]);
       setSpinning(false);
-
-      // Stop the jingle
-      jingleAudio.pause();
-      jingleAudio.currentTime = 0;
 
       if (NAMES[actualIndex] === "WILD CARD") {
         window.location.replace("https://dailydozentrivia.com/");
@@ -540,22 +530,21 @@ const App: React.FC = () => {
           {showWheel ? "Hide Wheel" : "Show Wheel"}
         </Button>
 
-        {jingleAudio && (
-          <IconButton
-            onClick={() => {
-              jingleAudio.play();
-            }}
-          >
-            <Typography variant="h5" component="h2" align="center">
-              Play Sound
-            </Typography>
-          </IconButton>
-        )}
+        <IconButton
+          onClick={() => {
+            (document.getElementById("sound-audio") as HTMLAudioElement).play();
+          }}
+        >
+          <Typography variant="h5" component="h2" align="center">
+            Play Sound
+          </Typography>
+        </IconButton>
 
         <Button onClick={() => setShowChecklist(!showChecklist)}>
           {showChecklist ? "Hide Checklist" : "Show Checklist"}
         </Button>
       </Box>
+      <audio src="/assets/AnimalCrossing.mp3" id="sound-audio" />
     </Box>
   );
 };
