@@ -89,8 +89,8 @@ const NAMES: string[] = [
   "Jaime Riley",
   "Alex Blackson",
   "Phil Gray",
-  // "Evan DiMartinis",
-  "WILD CARD",
+  "Evan DiMartinis",
+  // "WILD CARD",
 ];
 
 /* const NAMES = [
@@ -224,7 +224,7 @@ const App: React.FC = () => {
   const [spinning, setSpinning] = useState<boolean>(false);
   const [rotation, setRotation] = useState<number>(0);
   const [selectedName, setSelectedName] = useState<string | null>(null);
-  const [spinDuration, setSpinDuration] = useState<number>(7.5);
+  const [spinDuration, setSpinDuration] = useState<number>(6);
   const [spinEasing, setSpinEasing] = useState<string>(
     "cubic-bezier(0.2, 0.8, 0.2, 1)"
   );
@@ -337,6 +337,10 @@ const App: React.FC = () => {
     >
       <Typography variant="h3" component="h1" align="center" gutterBottom>
         Ritten Standup {format(new Date(), "MM/dd/yyyy")}
+      </Typography>
+
+      <Typography variant="h6" component="h3" align="center" gutterBottom>
+        Include Demos!
       </Typography>
 
       <Box
@@ -536,7 +540,7 @@ const App: React.FC = () => {
           {showChecklist ? "Hide Checklist" : "Show Checklist"}
         </Button>
       </Box>
-      <audio src="/assets/Sweatsweat.mp3" id="sound-audio" />
+      <audio src="/assets/GameCube.mp3" id="sound-audio" />
     </Box>
   );
 };
