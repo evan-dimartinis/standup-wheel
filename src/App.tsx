@@ -82,7 +82,7 @@ const NAMES: string[] = [
   "Travis McAuley",
   "Yosh Talwar",
   "Camille Jwo",
-  "Craig O'Donnell",
+  // "Craig O'Donnell",
   "Tom DeHart",
   "Marissa Sileo",
   "Jonah Offitzer",
@@ -90,7 +90,7 @@ const NAMES: string[] = [
   "Alex Blackson",
   "Phil Gray",
   "Evan DiMartinis",
-  // "WILD CARD",
+  "WILD CARD",
 ];
 
 /* const NAMES = [
@@ -224,7 +224,7 @@ const App: React.FC = () => {
   const [spinning, setSpinning] = useState<boolean>(false);
   const [rotation, setRotation] = useState<number>(0);
   const [selectedName, setSelectedName] = useState<string | null>(null);
-  const [spinDuration, setSpinDuration] = useState<number>(6);
+  const [spinDuration, setSpinDuration] = useState<number>(9);
   const [spinEasing, setSpinEasing] = useState<string>(
     "cubic-bezier(0.2, 0.8, 0.2, 1)"
   );
@@ -540,7 +540,7 @@ const App: React.FC = () => {
           {showChecklist ? "Hide Checklist" : "Show Checklist"}
         </Button>
       </Box>
-      <audio src="/assets/GameCube.mp3" id="sound-audio" />
+      <audio src="/assets/FourFlushin.mp3" id="sound-audio" />
     </Box>
   );
 };
