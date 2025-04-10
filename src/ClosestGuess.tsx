@@ -29,6 +29,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import RefreshIcon from "@mui/icons-material/Refresh";
+import { Clear } from "@mui/icons-material";
 
 const SUPABASE_URL = "https://glayielrecttnoxkmcjv.supabase.co";
 const SUPABASE_ANON_KEY =
@@ -301,7 +302,39 @@ const ClosestGuessAdmin = () => {
     }
   };
 
-  const setActiveQuestion = async (questionId: number) => {
+  const onSetInactive = async (questionId: number) => {
+    setLoading(true);
+    try {
+      const { error } = await supabase
+        .from("closest_guess_questions")
+        .update({ active: false })
+        .eq("id", questionId);
+      if (error) {
+        console.error("Error setting question inactive:", error);
+        setNotification({
+          type: "error",
+          message: "Failed to set question inactive.",
+        });
+      } else {
+        setNotification({
+          type: "success",
+          message: "Question set to inactive successfully.",
+        });
+        // Refresh questions
+        fetchQuestions();
+      }
+    } catch (error) {
+      console.error("Failed to set question inactive:", error);
+      setNotification({
+        type: "error",
+        message: "An unexpected error occurred.",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const setActiveQuestion = async (questionId?: number) => {
     setLoading(true);
     try {
       // First, set all questions to inactive
@@ -309,6 +342,11 @@ const ClosestGuessAdmin = () => {
         .from("closest_guess_questions")
         .update({ active: false })
         .neq("id", -1); // This will update all rows
+
+      if (!questionId) {
+        fetchQuestions();
+        return;
+      }
 
       // Then set the selected question to active
       const { error } = await supabase
@@ -551,6 +589,16 @@ const ClosestGuessAdmin = () => {
             >
               <Typography variant="h5">Questions</Typography>
               <Box>
+                {currentQuestion?.active && (
+                  <Button
+                    variant="contained"
+                    startIcon={<Clear />}
+                    onClick={() => setActiveQuestion(undefined)}
+                    sx={{ mr: 1 }}
+                  >
+                    Set Inactive
+                  </Button>
+                )}
                 <Button
                   variant="contained"
                   startIcon={<AddIcon />}
@@ -928,7 +976,7 @@ const ClosestGuess = () => {
       <Routes>
         <Route path="/guess" element={<ClosestGuessGuess />} />
         <Route path="/admin" element={<ClosestGuessAdmin />} />
-        <Route path="*" element={<ClosestGuessGuess />} />{" "}
+        <Route path="*" element={<ClosestGuessGuess />} />
         {/* Default to guess page */}
       </Routes>
     </BrowserRouter>
