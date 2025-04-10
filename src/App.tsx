@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { format } from "date-fns";
+import ClosestGuess from "./ClosestGuess";
 
 // Define interfaces
 interface ChecklistItem {
@@ -82,7 +83,7 @@ const NAMES: string[] = [
   "Travis McAuley",
   "Yosh Talwar",
   "Camille Jwo",
-  // "Craig O'Donnell",
+  "Craig O'Donnell",
   "Tom DeHart",
   "Marissa Sileo",
   "Jonah Offitzer",
@@ -90,8 +91,12 @@ const NAMES: string[] = [
   "Alex Blackson",
   "Phil Gray",
   "Evan DiMartinis",
-  "WILD CARD",
+  // "WILD CARD",
 ];
+/* 
+First Ever Ritten Annual Bi-weekly Standup 
+fix everything zero
+*/
 
 /* const NAMES = [
   "HELL", // "What is your personal hell?",
@@ -545,4 +550,8 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+const ClosestGuessApp = () => {
+  return <ClosestGuess />;
+};
+
+export default ClosestGuessApp;
