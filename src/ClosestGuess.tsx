@@ -67,26 +67,30 @@ const ClosestGuessGuess = () => {
 
   // Fetch the currently active question
   useEffect(() => {
-    const fetchActiveQuestion = async () => {
-      try {
-        const { data, error } = await supabase
-          .from("closest_guess_questions")
-          .select("*")
-          .eq("active", true)
-          .single();
-
-        if (error) {
-          console.error("Error fetching active question:", error);
-        } else if (data) {
-          setActiveQuestion(data);
-        }
-      } catch (error) {
-        console.error("Failed to fetch active question:", error);
-      }
-    };
-
     fetchActiveQuestion();
   }, []);
+
+  const fetchActiveQuestion = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("closest_guess_questions")
+        .select("*")
+        .eq("active", true)
+        .single();
+
+      if (error) {
+        console.error("Error fetching active question:", error);
+        setActiveQuestion(null);
+      } else if (data) {
+        setActiveQuestion(data);
+      } else {
+        console.warn("No active question found.");
+        setActiveQuestion(null);
+      }
+    } catch (error) {
+      console.error("Failed to fetch active question:", error);
+    }
+  };
 
   const upsertGuess = async () => {
     if (!name || guess === null) return;
@@ -109,7 +113,6 @@ const ClosestGuessGuess = () => {
           message: "Your guess has been submitted successfully!",
         });
         // Reset form
-        setName("");
         setGuess(null);
       }
     } catch (error) {
@@ -195,6 +198,22 @@ const ClosestGuessGuess = () => {
                 sx={{ mt: 2 }}
               >
                 {loading ? <CircularProgress size={24} /> : "Submit Your Guess"}
+              </Button>
+
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={fetchActiveQuestion}
+                disabled={loading}
+                fullWidth
+                size="large"
+                sx={{ mt: 2 }}
+              >
+                {loading ? (
+                  <CircularProgress size={24} />
+                ) : (
+                  "Get Active Question"
+                )}
               </Button>
             </Box>
           </CardContent>
