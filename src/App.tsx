@@ -76,7 +76,7 @@ const RANDOM_COLOR_LIST = [
 // Hardcoded list of names
 const NAMES: string[] = [
   "Christian Lopez",
-  "Maggie Smith",
+  // "Maggie Smith",
   "George Uehling",
   "Sabina Lowitt",
   "Gus Price",

@@ -724,7 +724,7 @@ const ClosestGuessAdmin = () => {
               alignItems="center"
               mb={2}
             >
-              <Typography variant="h5">Guesses</Typography>
+              <Typography variant="h5">Guesses ({guesses.length})</Typography>
               <Box>
                 <Button
                   variant="contained"
