@@ -356,6 +356,7 @@ const ClosestGuessAdmin = () => {
   const setActiveQuestion = async (questionId?: number) => {
     setLoading(true);
     try {
+      await truncateGuesses(); // Clear all guesses before setting a new active question
       // First, set all questions to inactive
       await supabase
         .from("closest_guess_questions")
