@@ -76,22 +76,22 @@ const RANDOM_COLOR_LIST = [
 // Hardcoded list of names
 const NAMES: string[] = [
   "Christian Lopez",
-  // "Maggie Smith",
+  "Maggie Smith",
   "George Uehling",
   "Sabina Lowitt",
-  "Gus Price",
+  // "Gus Price",
   "Travis McAuley",
   "Yosh Talwar",
   "Camille Jwo",
-  "Craig O'Donnell",
+  // "Craig O'Donnell",
   "Tom DeHart",
   "Marissa Sileo",
   "Jonah Offitzer",
   "Jaime Riley",
   "Alex Blackson",
-  "Phil Gray",
+  // "Phil Gray",
   "Evan DiMartinis",
-  // "WILD CARD",
+  "WILD CARD",
 ];
 /* 
 First Ever Ritten Annual Bi-weekly Standup 
@@ -229,7 +229,7 @@ const App: React.FC = () => {
   const [spinning, setSpinning] = useState<boolean>(false);
   const [rotation, setRotation] = useState<number>(0);
   const [selectedName, setSelectedName] = useState<string | null>(null);
-  const [spinDuration, setSpinDuration] = useState<number>(9);
+  const [spinDuration, setSpinDuration] = useState<number>(7);
   const [spinEasing, setSpinEasing] = useState<string>(
     "cubic-bezier(0.2, 0.8, 0.2, 1)"
   );
@@ -342,10 +342,6 @@ const App: React.FC = () => {
     >
       <Typography variant="h3" component="h1" align="center" gutterBottom>
         Ritten Standup {format(new Date(), "MM/dd/yyyy")}
-      </Typography>
-
-      <Typography variant="h6" component="h3" align="center" gutterBottom>
-        Include Demos!
       </Typography>
 
       <Box
@@ -545,7 +541,7 @@ const App: React.FC = () => {
           {showChecklist ? "Hide Checklist" : "Show Checklist"}
         </Button>
       </Box>
-      <audio src="/assets/FourFlushin.mp3" id="sound-audio" />
+      <audio src="/assets/thx.mp3" id="sound-audio" />
     </Box>
   );
 };
@@ -554,4 +550,4 @@ const ClosestGuessApp = () => {
   return <ClosestGuess />;
 };
 
-export default ClosestGuessApp;
+export default App;
