@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  Container,
   Typography,
   Box,
   Button,
@@ -9,30 +8,17 @@ import {
   ListItemText,
   Checkbox,
   TextField,
-  Paper,
   Divider,
-  IconButton,
 } from "@mui/material";
-import { styled } from "@mui/material/styles";
 import { format } from "date-fns";
-import ClosestGuess from "./ClosestGuess";
+import WheelComponent from "./components/wheel";
+import V2 from "./components/V2";
 
 // Define interfaces
 interface ChecklistItem {
   name: string;
   checked: boolean;
   notes: string;
-}
-
-interface WheelProps {
-  rotation: number;
-  spinDuration: number;
-  spinEasing: string;
-  theme?: any; // For styled components
-}
-
-interface WheelContentProps {
-  names: string[];
 }
 
 /**
@@ -76,170 +62,36 @@ const RANDOM_COLOR_LIST = [
 // Hardcoded list of names
 const NAMES: string[] = [
   "Christian Lopez",
-  "Maggie Smith",
-  "George Uehling",
-  "Sabina Lowitt",
-  // "Gus Price",
+  "Maggie Smith", // 1
+  "George Uehling", // 2
+  "Gus Price", // 1
   "Travis McAuley",
-  "Yosh Talwar",
+  // "Yosh Talwar", // 1
   "Camille Jwo",
-  // "Craig O'Donnell",
-  "Tom DeHart",
-  "Marissa Sileo",
-  "Jonah Offitzer",
-  "Jaime Riley",
-  "Alex Blackson",
-  // "Phil Gray",
+  "Craig O'Donnell",
+  // "Marissa Sileo", // 0.5
+  "Jonah Offitzer", // 2
+  "Jaime Riley", // 1
+  // "Alex Blackson",
+  "Phil Gray", // 0.5
+  "Gabe Szczepanek", // 1
   "Evan DiMartinis",
-  "WILD CARD",
+  // "WILD CARD",
 ];
-/* 
-First Ever Ritten Annual Bi-weekly Standup 
-fix everything zero
-*/
 
-/* const NAMES = [
-  "HELL", // "What is your personal hell?",
-  "Fav game", // "What is your favorite board game?",
-  "Childhood dream", // "What was your dream job as a child?",
-  "Playlist?", // "Give me a song you've been feeling lately to put into a group fun friday playlist",
-  "WILD CARD",
-  "HELL", // "What is your personal hell?",
-  "Fav game", // "What is your favorite board game?",
-  "Childhood dream", // "What was your dream job as a child?",
-  "Playlist?", // "Give me a song you've been feeling lately to put into a group fun friday playlist",
-  "WILD CARD",
-]; */
-
-// Styled components
-const WheelContainer = styled(Box)(() => ({
-  position: "relative",
-  width: "540px", // Larger wheel
-  height: "540px", // Larger wheel
-  margin: "0 auto 12px",
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-}));
-
-const WheelIndicator = styled("div")(({ theme }) => ({
-  position: "absolute",
-  top: "-25px", // Larger indicator
-  left: "50%",
-  width: "50px", // Larger indicator
-  height: "50px", // Larger indicator
-  background: theme.palette.error.main,
-  transform: "translateX(-50%) rotate(180deg)",
-  clipPath: "polygon(50% 0%, 0% 100%, 100% 100%)",
-  zIndex: 10,
-}));
-
-const Wheel = styled("div")<WheelProps>(
-  ({ rotation, theme, spinDuration, spinEasing }) => ({
-    width: "500px", // Larger wheel
-    height: "500px", // Larger wheel
-    borderRadius: "50%",
-    position: "relative",
-    border: `6px solid ${theme.palette.primary.main}`, // Thicker border for larger wheel
-    transition: `transform ${spinDuration}s ${spinEasing}`,
-    transform: `rotate(${rotation}deg)`,
-  })
-);
-
-// Updated wheel rendering that uses SVG for precise slices - with larger dimensions
-const WheelContent: React.FC<WheelContentProps> = ({ names }) => {
-  const radius = 250; // Larger radius
-  const center = radius;
-  const anglePerSlice = 360 / names.length;
-
-  return (
-    <svg width="500" height="500" viewBox="0 0 500 500">
-      {/* Larger SVG dimensions */}
-      {names.map((name, index) => {
-        const startAngle = index * anglePerSlice;
-        const endAngle = (index + 1) * anglePerSlice;
-        const startRad = ((startAngle - 90) * Math.PI) / 180;
-        const endRad = ((endAngle - 90) * Math.PI) / 180;
-
-        const x1 = center + radius * Math.cos(startRad);
-        const y1 = center + radius * Math.sin(startRad);
-        const x2 = center + radius * Math.cos(endRad);
-        const y2 = center + radius * Math.sin(endRad);
-
-        // Create slice path
-        const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
-        const pathData = [
-          `M ${center},${center}`,
-          `L ${x1},${y1}`,
-          `A ${radius},${radius} 0 ${largeArcFlag} 1 ${x2},${y2}`,
-          "Z",
-        ].join(" ");
-
-        // Calculate text position (midpoint of arc)
-        const midAngle = (startAngle + endAngle) / 2;
-        const midRad = ((midAngle - 90) * Math.PI) / 180;
-        const textDistance = radius * 0.75; // Position text 75% from center to edge
-        const textX = center + textDistance * Math.cos(midRad);
-        const textY = center + textDistance * Math.sin(midRad);
-
-        // Calculate text rotation
-        const textRotation = midAngle - 90;
-
-        let color = index % 2 === 1 ? "#1890FF" : "white";
-        if (name === "WILD CARD") {
-          color = "#238f96";
-        }
-
-        // const color = RANDOM_COLOR_LIST[index];
-
-        return (
-          <g key={index}>
-            <path
-              d={pathData}
-              fill={color}
-              stroke="#fff"
-              strokeWidth="2" // Thicker borders
-            />
-            <text
-              x={textX}
-              y={textY}
-              textAnchor="middle"
-              fontSize="16" // Larger text
-              fontWeight="bold"
-              fill="#000"
-              transform={`rotate(${textRotation}, ${textX}, ${textY})`}
-              style={{
-                maxWidth: "100px", // Larger text area
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {name}
-            </text>
-          </g>
-        );
-      })}
-    </svg>
-  );
-};
+// Fun emoji list for wacky mode
+const EMOJIS = ["🚀", "✨", "🎉", "🔥", "💯", "🌈", "🦄", "🤩", "🎸", "🍕"];
 
 const App: React.FC = () => {
-  // State variables
-  const [spinning, setSpinning] = useState<boolean>(false);
-  const [rotation, setRotation] = useState<number>(0);
-  const [selectedName, setSelectedName] = useState<string | null>(null);
-  const [spinDuration, setSpinDuration] = useState<number>(7);
-  const [spinEasing, setSpinEasing] = useState<string>(
-    "cubic-bezier(0.2, 0.8, 0.2, 1)"
-  );
   const [checklist, setChecklist] = useState<ChecklistItem[]>(
     NAMES.map((name) => ({ name, checked: false, notes: "" }))
   );
   const [showWheel, setShowWheel] = useState<boolean>(true);
   const [showChecklist, setShowChecklist] = useState<boolean>(true);
-
-  const [showConfig, setShowConfig] = useState<boolean>(false);
+  const [showQuestion, setShowQuestion] = useState<boolean>(false);
+  const [isWacky, setIsWacky] = useState<boolean>(false);
+  const [bounceEffect, setBounceEffect] = useState<number>(-1);
+  const [rotation, setRotation] = useState<number>(0);
 
   useEffect(() => {
     localStorage.setItem(
@@ -250,50 +102,20 @@ const App: React.FC = () => {
     );
   }, [checklist]);
 
-  // Function to spin the wheel
-  const spinWheel = (): void => {
-    if (spinning) return;
+  // Wacky rotation effect
+  useEffect(() => {
+    const rotationInterval = setInterval(() => {
+      setRotation((prev) => (prev + 1) % 360);
+    }, 100);
 
-    setSpinning(true);
-    setSelectedName(null);
+    return () => clearInterval(rotationInterval);
+  }, []);
 
-    // Play the jingle
-    (document.getElementById("sound-audio") as HTMLAudioElement).play();
-
-    // Calculate random rotation (5-10 full spins plus random position)
-    const spinCount = 5 + Math.random() * 5;
-    const randomAngle = Math.random() * 360;
-    const newRotation = rotation + spinCount * 360 + randomAngle;
-
-    setRotation(newRotation);
-
-    // Determine selected name after spin completes - match the duration from state
-    setTimeout(() => {
-      // Calculate which slice is at the top after spinning
-      const normalizedRotation = newRotation % 360;
-      const sliceSize = 360 / NAMES.length;
-      // We need to adjust for the fact that the wheel spins clockwise but our indexes go counterclockwise
-      const selectedIndex =
-        NAMES.length -
-        (Math.floor(normalizedRotation / sliceSize) % NAMES.length) -
-        1;
-      const actualIndex =
-        selectedIndex >= 0 ? selectedIndex : NAMES.length + selectedIndex;
-
-      setSelectedName(NAMES[actualIndex]);
-      setSpinning(false);
-
-      if (NAMES[actualIndex] === "WILD CARD") {
-        window.location.replace("https://dailydozentrivia.com/");
-      } else {
-        const u = new SpeechSynthesisUtterance(NAMES[actualIndex]);
-        window.speechSynthesis.speak(u);
-      }
-    }, spinDuration * 1000);
-  };
-
-  // Handle checkbox changes
+  // Handle checkbox changes with bounce effect
   const handleToggleCheck = (index: number): void => {
+    setBounceEffect(index);
+    setTimeout(() => setBounceEffect(-1), 500);
+
     setChecklist((prev) => {
       const updated = [...prev];
       updated[index] = {
@@ -316,17 +138,20 @@ const App: React.FC = () => {
     });
   };
 
-  // Handle spin duration change
-  const handleSpinDurationChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ): void => {
-    setSpinDuration(parseFloat(event.target.value));
+  const onPlaySound = () => {
+    const audio = document.getElementById("sound-audio") as HTMLAudioElement;
+    if (audio) {
+      audio.currentTime = 0; // Reset to start
+      audio.play();
+    }
   };
 
-  // Handle spin easing change
-  const handleSpinEasingChange = (event: any): void => {
-    setSpinEasing(event.target.value);
+  // Get random emoji
+  const getRandomEmoji = () => {
+    return EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
   };
+
+  return <V2 />;
 
   return (
     <Box
@@ -337,12 +162,129 @@ const App: React.FC = () => {
       minHeight="100vh"
       p={4}
       sx={{
-        background: "linear-gradient(45deg, #1890FF, #FFFFFF);",
+        background: `linear-gradient(45deg, #1890FF, #FFFFFF, #1890FF)`,
+        backgroundSize: "200% 200%",
+        animation: "gradientShift 10s ease infinite",
+        overflow: "hidden",
+        position: "relative",
+        "&::before": {
+          content: '""',
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          /* background:
+            'url(\'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50"><circle cx="25" cy="25" r="3" fill="rgba(255,255,255,0.2)"/></svg>\')', */
+          opacity: 0.4,
+          zIndex: 0,
+        },
+        "@keyframes gradientShift": {
+          "0%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+          "100%": { backgroundPosition: "0% 50%" },
+        },
       }}
     >
-      <Typography variant="h3" component="h1" align="center" gutterBottom>
-        Ritten Standup {format(new Date(), "MM/dd/yyyy")}
+      <Typography
+        variant="h3"
+        component="h1"
+        align="center"
+        gutterBottom
+        sx={{
+          fontFamily: "'Comic Sans MS', cursive, sans-serif",
+          fontWeight: "bold",
+          color: "#0066cc",
+          textShadow: "2px 2px 4px rgba(0,0,0,0.2)",
+          /* animation: "wiggle 1s ease-in-out infinite",
+          "@keyframes wiggle": {
+            "0%, 100%": { transform: "rotate(-2deg)" },
+            "50%": { transform: "rotate(2deg)" },
+          }, */
+        }}
+      >
+        Fun Friday!!!!!
       </Typography>
+
+      {showQuestion && (
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          p="16px"
+          bgcolor={"white"}
+          mb="12px"
+          borderRadius="8px"
+        >
+          {/* <Typography variant="h6" align="center" gutterBottom>
+            ""Don't cry because it's over, smile because it happened!" - WHO???"
+            - Evan DiMartinis because Sabina is leaving.
+          </Typography> */}
+
+          {/* <img
+            style={{
+              height: "400px",
+              width: "400px",
+            }}
+            src="/assets/IsThisIt.png"
+            alt="Chocolate pic"
+          /> */}
+        </Box>
+      )}
+
+      {/* <Typography
+          variant="h6"
+          align="center"
+          gutterBottom
+          sx={{
+            padding: "10px",
+            backgroundColor: "rgba(255,255,255,0.7)",
+            borderRadius: "12px",
+            boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+            fontStyle: "italic",
+            // transform: `rotate(${Math.sin(rotation / 20) * 3}deg)`,
+            transition: "transform 0.3s ease",
+          }}
+        >
+          What country produces the SECOND-most coffee in the world? (behind
+          Brazil as the #1)
+        </Typography> */}
+      {/* */}
+      {/*  */}
+
+      {/* <Typography
+        variant="h6"
+        align="center"
+        gutterBottom
+        sx={{
+          padding: "10px",
+          backgroundColor: "rgba(255,255,255,0.7)",
+          borderRadius: "12px",
+          boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+          fontStyle: "italic",
+          // transform: `rotate(${Math.sin(rotation / 20) * 3}deg)`,
+          transition: "transform 0.3s ease",
+        }}
+      >
+        Bring up any tech debt that you have noticed recently!
+      </Typography>
+
+      <Typography
+        variant="h6"
+        align="center"
+        gutterBottom
+        sx={{
+          padding: "10px",
+          backgroundColor: "rgba(255,255,255,0.7)",
+          borderRadius: "12px",
+          boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+          fontStyle: "italic",
+          // transform: `rotate(${Math.sin(rotation / 20) * 3}deg)`,
+          transition: "transform 0.3s ease",
+        }}
+      >
+        Tell me if you have anything to demo today in sprint retro!
+      </Typography> */}
 
       <Box
         display="flex"
@@ -350,120 +292,45 @@ const App: React.FC = () => {
         justifyContent="space-between"
         width="100%"
         gap="16px"
+        sx={{
+          flexDirection: { xs: "column", md: "row" },
+          alignItems: { xs: "center", md: "flex-start" },
+        }}
       >
         {/* Wheel Section */}
         {showWheel && (
-          <Box display="flex" flexDirection="column" flex={1} gap="8px">
-            {/* Wider to accommodate larger wheel */}
-            <Paper
-              elevation={3}
-              sx={{
-                p: 3,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: "16px",
-                background: "transparent",
-                boxShadow: "none",
-              }}
-            >
-              <WheelContainer>
-                <WheelIndicator />
-                <Wheel
-                  rotation={rotation}
-                  spinDuration={spinDuration}
-                  spinEasing={spinEasing}
-                >
-                  <WheelContent names={NAMES} />
-                </Wheel>
-              </WheelContainer>
-
-              {/* Spin controls */}
-              {showConfig ? (
-                <Box sx={{ width: "100%", mb: 3, mt: -4 }}>
-                  <Button onClick={() => setShowConfig(false)}>
-                    Hide Config
-                  </Button>
-                  <Box display="flex" width="100%" gap="8px">
-                    <Box display="flex" flex={1} gap="8px">
-                      <Typography variant="body2" gutterBottom>
-                        Spin Duration: {spinDuration}s
-                      </Typography>
-                      <TextField
-                        type="range"
-                        inputProps={{
-                          min: 1,
-                          max: 10,
-                          step: 0.5,
-                        }}
-                        value={spinDuration}
-                        onChange={handleSpinDurationChange}
-                        variant="outlined"
-                        size="small"
-                        fullWidth
-                      />
-                    </Box>
-                    <Box display="flex" flex={1} gap="8px">
-                      <Typography variant="body2" gutterBottom>
-                        Slow Down Rate:
-                      </Typography>
-                      <TextField
-                        select
-                        value={spinEasing}
-                        onChange={handleSpinEasingChange}
-                        variant="outlined"
-                        size="small"
-                        fullWidth
-                        SelectProps={{
-                          native: true,
-                        }}
-                      >
-                        <option value="cubic-bezier(0.2, 0.8, 0.2, 1)">
-                          Smooth
-                        </option>
-                        <option value="cubic-bezier(0.1, 0.7, 0.1, 1)">
-                          Gradual
-                        </option>
-                        <option value="cubic-bezier(0.3, 0.9, 0.3, 1)">
-                          Quick
-                        </option>
-                        <option value="cubic-bezier(0, 1, 0, 1)">Abrupt</option>
-                        <option value="ease-out">Standard</option>
-                      </TextField>
-                    </Box>
-                  </Box>
-                </Box>
-              ) : (
-                <Button onClick={() => setShowConfig(true)}>Show Config</Button>
-              )}
-
-              <Button
-                variant="contained"
-                color="primary"
-                size="large"
-                onClick={spinWheel}
-                disabled={spinning}
-              >
-                {spinning ? "Spinning..." : "Spin the Wheel"}
-              </Button>
-
-              {selectedName && (
-                <Box mt={3} textAlign="center">
-                  <Typography variant="h6" component="div" gutterBottom>
-                    Selected:
-                  </Typography>
-                  <Typography variant="h4" component="div" color="primary">
-                    {selectedName}
-                  </Typography>
-                </Box>
-              )}
-            </Paper>
+          <Box
+            sx={{
+              animation: "float 6s ease-in-out infinite",
+              "@keyframes float": {
+                "0%, 100%": { transform: "translateY(0px)" },
+                "50%": { transform: "translateY(-15px)" },
+              },
+            }}
+          >
+            <WheelComponent names={NAMES} />
           </Box>
         )}
 
         {/* Checklist Section */}
         {showChecklist && (
-          <Box display="flex" flexDirection="column" gap="4px" width="700px">
+          <Box
+            display="flex"
+            flexDirection="column"
+            gap="4px"
+            width="700px"
+            sx={{
+              backgroundColor: "rgba(255,255,255,0.7)",
+              borderRadius: "16px",
+              padding: "16px",
+              boxShadow: "0 8px 16px rgba(0,102,204,0.2)",
+              transition: "all 0.3s ease",
+              "&:hover": {
+                boxShadow: "0 12px 24px rgba(0,102,204,0.3)",
+                transform: "translateY(-5px)",
+              },
+            }}
+          >
             {checklist
               .sort(
                 (itema, itemb) =>
@@ -471,18 +338,57 @@ const App: React.FC = () => {
               )
               .map((item, index) => (
                 <React.Fragment key={index}>
-                  <Box display="flex" flexDirection="column">
-                    <ListItem sx={{ padding: "4px 8px", display: "flex" }}>
+                  <Box
+                    display="flex"
+                    flexDirection="column"
+                    sx={{
+                      animation:
+                        bounceEffect === index ? "bounce 0.5s ease" : "none",
+                      "@keyframes bounce": {
+                        "0%, 100%": { transform: "scale(1)" },
+                        "50%": { transform: "scale(1.05)" },
+                      },
+                    }}
+                  >
+                    <ListItem
+                      sx={{
+                        padding: "8px 12px",
+                        display: "flex",
+                        borderRadius: "8px",
+                        backgroundColor: item.checked
+                          ? "rgba(0,102,204,0.1)"
+                          : "transparent",
+                        transition: "all 0.3s ease",
+                        "&:hover": {
+                          backgroundColor: item.checked
+                            ? "rgba(0,102,204,0.15)"
+                            : "rgba(255,255,255,0.5)",
+                        },
+                      }}
+                    >
                       <ListItemIcon sx={{ height: "40px" }}>
                         <Checkbox
                           edge="start"
                           checked={item.checked}
                           onChange={() => handleToggleCheck(index)}
                           color="primary"
+                          sx={{
+                            "& .MuiSvgIcon-root": {
+                              fontSize: 28,
+                              transition: "all 0.2s ease",
+                              "&:hover": {
+                                transform: "scale(1.2)",
+                              },
+                            },
+                          }}
                         />
                       </ListItemIcon>
                       <ListItemText
-                        primary={item.name}
+                        primary={
+                          <span>
+                            {item.name} {item.checked}
+                          </span>
+                        }
                         sx={{
                           textDecoration: item.checked
                             ? "line-through"
@@ -492,6 +398,8 @@ const App: React.FC = () => {
                           minWidth: "fit-content",
                           display: "flex",
                           flexShrink: 1,
+                          fontWeight: "bold",
+                          fontSize: "1.1rem",
                         }}
                         onClick={() => handleToggleCheck(index)}
                       />
@@ -503,11 +411,25 @@ const App: React.FC = () => {
                         }
                         variant="outlined"
                         size="small"
-                        sx={{ width: "400px" }}
+                        sx={{
+                          width: "400px",
+                          "& .MuiOutlinedInput-root": {
+                            borderRadius: "12px",
+                            transition: "all 0.3s ease",
+                            "&:hover": {
+                              "& fieldset": {
+                                borderColor: "#1890FF",
+                              },
+                            },
+                          },
+                        }}
                       />
                     </ListItem>
                     {index < checklist.length - 1 && (
-                      <Divider variant="inset" />
+                      <Divider
+                        variant="middle"
+                        sx={{ borderStyle: "dashed" }}
+                      />
                     )}
                   </Box>
                 </React.Fragment>
@@ -522,32 +444,142 @@ const App: React.FC = () => {
         width="100%"
         alignItems="center"
         justifyContent="center"
+        mt={4}
       >
-        <Button onClick={() => setShowWheel(!showWheel)}>
-          {showWheel ? "Hide Wheel" : "Show Wheel"}
-        </Button>
-
-        <IconButton
-          onClick={() => {
-            (document.getElementById("sound-audio") as HTMLAudioElement).play();
+        <Button
+          onClick={() => setShowWheel(!showWheel)}
+          variant="contained"
+          sx={{
+            borderRadius: "20px",
+            padding: "10px 20px",
+            fontWeight: "bold",
+            background: "linear-gradient(45deg, #1890FF, #74b9ff)",
+            boxShadow: "0 4px 8px rgba(0,102,204,0.3)",
+            transition: "all 0.3s ease",
+            "&:hover": {
+              transform: "translateY(-3px) scale(1.05)",
+              boxShadow: "0 6px 12px rgba(0,102,204,0.4)",
+            },
           }}
         >
-          <Typography variant="h5" component="h2" align="center">
-            Play Sound
-          </Typography>
-        </IconButton>
+          {showWheel ? "🙈 Hide Wheel" : "🎡 Show Wheel"}
+        </Button>
 
-        <Button onClick={() => setShowChecklist(!showChecklist)}>
-          {showChecklist ? "Hide Checklist" : "Show Checklist"}
+        <Button
+          onClick={() => {
+            setShowQuestion(!showQuestion);
+          }}
+          variant="contained"
+          sx={{
+            borderRadius: "20px",
+            padding: "10px 20px",
+            fontWeight: "bold",
+            background: "linear-gradient(45deg, #1890FF, #74b9ff)",
+            boxShadow: "0 4px 8px rgba(0,102,204,0.3)",
+            transition: "all 0.3s ease",
+            "&:hover": {
+              transform: "translateY(-3px) scale(1.05)",
+              boxShadow: "0 6px 12px rgba(0,102,204,0.4)",
+            },
+          }}
+        >
+          {showQuestion ? "🤫 Hide Question" : "🤔 Show Question"}
+        </Button>
+
+        <Button
+          onClick={() => setShowChecklist(!showChecklist)}
+          variant="contained"
+          sx={{
+            borderRadius: "20px",
+            padding: "10px 20px",
+            fontWeight: "bold",
+            background: "linear-gradient(45deg, #1890FF, #74b9ff)",
+            boxShadow: "0 4px 8px rgba(0,102,204,0.3)",
+            transition: "all 0.3s ease",
+            "&:hover": {
+              transform: "translateY(-3px) scale(1.05)",
+              boxShadow: "0 6px 12px rgba(0,102,204,0.4)",
+            },
+          }}
+        >
+          {showChecklist ? "📝 Hide Checklist" : "📋 Show Checklist"}
+        </Button>
+
+        <Button
+          onClick={onPlaySound}
+          variant="contained"
+          sx={{
+            borderRadius: "20px",
+            padding: "10px 20px",
+            fontWeight: "bold",
+            background: "linear-gradient(45deg, #1890FF, #74b9ff)",
+            boxShadow: "0 4px 8px rgba(0,102,204,0.3)",
+            transition: "all 0.3s ease",
+            "&:hover": {
+              transform: "translateY(-3px) scale(1.05)",
+              boxShadow: "0 6px 12px rgba(0,102,204,0.4)",
+            },
+          }}
+        >
+          Play Sound
         </Button>
       </Box>
-      <audio src="/assets/thx.mp3" id="sound-audio" />
+
+      <Button
+        onClick={() => setIsWacky(!isWacky)}
+        variant="outlined"
+        sx={{
+          mt: 2,
+          borderRadius: "20px",
+          borderWidth: "2px",
+          borderColor: "#1890FF",
+          color: "#1890FF",
+          fontWeight: "bold",
+          animation: "pulse 2s infinite",
+          "@keyframes pulse": {
+            "0%": {
+              boxShadow: "0 0 0 0 rgba(24, 144, 255, 0.4)",
+            },
+            "70%": {
+              boxShadow: "0 0 0 10px rgba(24, 144, 255, 0)",
+            },
+            "100%": {
+              boxShadow: "0 0 0 0 rgba(24, 144, 255, 0)",
+            },
+          },
+        }}
+      >
+        {isWacky ? "🧐 Normal Mode" : "🤪 Wacky Mode!"}
+      </Button>
+
+      <audio src="/assets/MondayMorning.mp3" id="sound-audio" />
+
+      {/* Floating bubbles for extra wackiness */}
+      {isWacky &&
+        Array.from({ length: 10 }).map((_, i) => (
+          <Box
+            key={i}
+            sx={{
+              position: "absolute",
+              fontSize: `${Math.random() * 30 + 20}px`,
+              opacity: 0.6,
+              left: `${Math.random() * 90 + 5}%`,
+              top: `${Math.random() * 90 + 5}%`,
+              zIndex: 0,
+              animation: `float-bubble ${
+                Math.random() * 10 + 10
+              }s linear infinite`,
+              "@keyframes float-bubble": {
+                "0%": { transform: "translateY(100vh) rotate(0deg)" },
+                "100%": { transform: "translateY(-100px) rotate(360deg)" },
+              },
+            }}
+          >
+            {EMOJIS[Math.floor(Math.random() * EMOJIS.length)]}
+          </Box>
+        ))}
     </Box>
   );
-};
-
-const ClosestGuessApp = () => {
-  return <ClosestGuess />;
 };
 
 export default App;
