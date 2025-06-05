@@ -61,20 +61,20 @@ const RANDOM_COLOR_LIST = [
 
 // Hardcoded list of names
 const NAMES: string[] = [
-  "Christian Lopez",
+  // "Christian Lopez",
   "Maggie Smith", // 1
   "George Uehling", // 2
   "Gus Price", // 1
   "Travis McAuley",
-  // "Yosh Talwar", // 1
+  // "Yosh Talwar", // 2
   "Camille Jwo",
   "Craig O'Donnell",
-  // "Marissa Sileo", // 0.5
+  "Marissa Sileo", // 0.5
   "Jonah Offitzer", // 2
   "Jaime Riley", // 1
-  // "Alex Blackson",
+  "Alex Blackson",
   "Phil Gray", // 0.5
-  "Gabe Szczepanek", // 1
+  // "Gabe Szczepanek", // 1
   "Evan DiMartinis",
   // "WILD CARD",
 ];
@@ -86,7 +86,7 @@ const App: React.FC = () => {
   const [checklist, setChecklist] = useState<ChecklistItem[]>(
     NAMES.map((name) => ({ name, checked: false, notes: "" }))
   );
-  const [showWheel, setShowWheel] = useState<boolean>(true);
+  const [showWheel, setShowWheel] = useState<boolean>(false);
   const [showChecklist, setShowChecklist] = useState<boolean>(true);
   const [showQuestion, setShowQuestion] = useState<boolean>(false);
   const [isWacky, setIsWacky] = useState<boolean>(false);
@@ -203,7 +203,7 @@ const App: React.FC = () => {
           }, */
         }}
       >
-        Fun Friday!!!!!
+        What are you Demoing today at Sprint Review?
       </Typography>
 
       {showQuestion && (
@@ -216,19 +216,18 @@ const App: React.FC = () => {
           mb="12px"
           borderRadius="8px"
         >
-          {/* <Typography variant="h6" align="center" gutterBottom>
-            ""Don't cry because it's over, smile because it happened!" - WHO???"
-            - Evan DiMartinis because Sabina is leaving.
-          </Typography> */}
+          <Typography variant="h6" align="center" gutterBottom>
+            Name the 2 celebrities mashed up in this photo
+          </Typography>
 
-          {/* <img
+          <img
             style={{
-              height: "400px",
-              width: "400px",
+              height: "360px",
+              width: "600px",
             }}
-            src="/assets/IsThisIt.png"
+            src="/assets/novak-dreyfuss.png"
             alt="Chocolate pic"
-          /> */}
+          />
         </Box>
       )}
 

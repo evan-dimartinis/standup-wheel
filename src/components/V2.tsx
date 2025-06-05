@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Checkbox,
@@ -11,6 +11,7 @@ import {
   Chip,
   Stack,
   Divider,
+  ListItem,
 } from "@mui/material";
 import WheelComponent from "./wheel";
 
@@ -35,6 +36,29 @@ const ScrumStandupMobile: React.FC = () => {
     setShowWheel((prev) => !prev);
   };
 
+  useEffect(() => {
+    const audio = document.getElementById("sound-audio") as HTMLAudioElement;
+    if (audio) {
+      audio.currentTime = 0; // Reset to start
+      audio.play();
+    }
+
+    /* return () => {
+      if (audioElement) {
+        audioElement.pause();
+        audioElement.currentTime = 0; // Reset playback position
+      }
+    }; */
+  }, []);
+
+  const onPlayAudio = () => {
+    const audio = document.getElementById("sound-audio") as HTMLAudioElement;
+    if (audio) {
+      audio.currentTime = 0; // Reset to start
+      audio.play();
+    }
+  };
+
   type TeamMember =
     | "Evan DiMartinis"
     | "Camille Jwo"
@@ -49,11 +73,12 @@ const ScrumStandupMobile: React.FC = () => {
     | "George Uehling"
     | "Alex Blackson"
     | "Maggie Smith"
-    | "Christian Lopez";
+    | "Christian Lopez"
+    | "Gabe Szczepanek";
 
   const teams: { [key: string]: TeamMember[] } = {
-    AI: ["Gus Price", "Travis McAuley", "Jaime Riley", "Craig O'Donnell"],
-    Core: ["Yosh Talwar", "Phil Gray", "Marissa Sileo"],
+    AI: ["Travis McAuley", "Gus Price", "Jaime Riley", "Craig O'Donnell"],
+    Core: ["Marissa Sileo", "Yosh Talwar", "Phil Gray"],
     RCM: ["Evan DiMartinis", "Camille Jwo", "Jonah Offitzer"],
     Product: ["George Uehling", "Alex Blackson"],
     Design: ["Maggie Smith", "Christian Lopez"],
@@ -62,18 +87,19 @@ const ScrumStandupMobile: React.FC = () => {
   const scores: Record<TeamMember, number> = {
     "Evan DiMartinis": 0,
     "Camille Jwo": 0,
-    "Jonah Offitzer": 0,
-    "Yosh Talwar": 0,
+    "Jonah Offitzer": 2,
+    "Yosh Talwar": 2,
     "Phil Gray": 0,
     "Marissa Sileo": 0,
-    "Gus Price": 0,
+    "Gus Price": 1,
     "Travis McAuley": 0,
-    "Jaime Riley": 0,
+    "Jaime Riley": 1,
     "Craig O'Donnell": 0,
-    "George Uehling": 0,
+    "George Uehling": 2,
     "Alex Blackson": 0,
-    "Maggie Smith": 0,
+    "Maggie Smith": 1,
     "Christian Lopez": 0,
+    "Gabe Szczepanek": 1,
   };
 
   const [checked, setChecked] = useState<{ [key: string]: boolean }>({});
@@ -97,6 +123,49 @@ const ScrumStandupMobile: React.FC = () => {
     setNewTopic("");
     setSelectedMembers([]);
   };
+
+  const renderTeam = (teamName: string, members: TeamMember[]) => (
+    <Paper
+      key={teamName}
+      sx={{
+        mb: 3,
+        p: 2,
+        backgroundColor: "#ffffff",
+        border: "2px solid #0985F8",
+        borderRadius: 2,
+      }}
+    >
+      <Typography variant="h6" gutterBottom sx={{ color: "#0985F8" }}>
+        {teamName}
+      </Typography>
+      <Box display="flex" flexDirection="column" gap={1}>
+        {members.map((name) => (
+          <FormControlLabel
+            key={name}
+            control={
+              <Checkbox
+                checked={!!checked[name]}
+                onChange={() => handleCheck(name)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleCheck(name);
+                  }
+                }}
+                sx={{
+                  color: "#0985F8",
+                  "&.Mui-checked": { color: "#0985F8" },
+                }}
+              />
+            }
+            label={name}
+            sx={{
+              backgroundColor: !!checked[name] ? "#E3F2FD" : "transparent",
+            }}
+          />
+        ))}
+      </Box>
+    </Paper>
+  );
 
   return (
     <Container
@@ -145,48 +214,44 @@ const ScrumStandupMobile: React.FC = () => {
         </Paper>
       )}
 
-      {Object.entries(teams).map(([teamName, members]) => (
-        <Paper
-          key={teamName}
-          sx={{
-            mb: 3,
-            p: 2,
-            backgroundColor: "#ffffff",
-            border: "2px solid #0985F8",
-            borderRadius: 2,
-          }}
-        >
-          <Typography variant="h6" gutterBottom sx={{ color: "#0985F8" }}>
-            {teamName}
-          </Typography>
-          <Box display="flex" flexDirection="column" gap={1}>
-            {members.map((name) => (
-              <FormControlLabel
-                key={name}
-                control={
-                  <Checkbox
-                    checked={!!checked[name]}
-                    onChange={() => handleCheck(name)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        handleCheck(name);
-                      }
-                    }}
-                    sx={{
-                      color: "#0985F8",
-                      "&.Mui-checked": { color: "#0985F8" },
-                    }}
-                  />
-                }
-                label={name}
-                sx={{
-                  backgroundColor: !!checked[name] ? "#E3F2FD" : "transparent",
-                }}
-              />
-            ))}
-          </Box>
-        </Paper>
-      ))}
+      <Paper
+        sx={{
+          mb: 3,
+          p: 2,
+          backgroundColor: "#ffffff",
+          borderRadius: 2,
+          border: "2px solid #0985F8",
+        }}
+      >
+        <Typography variant="h6" sx={{ color: "#0985F8" }} gutterBottom>
+          Retro Reminders!
+        </Typography>
+        <Stack spacing={1}>
+          <ListItem>
+            <Typography>Do holistic reviews every time through</Typography>
+          </ListItem>
+          <ListItem>
+            <Typography>
+              Don't cram work at the end of your sprint - stay balanced
+            </Typography>
+          </ListItem>
+          <ListItem>
+            <Typography>Be open to new code patterns!</Typography>
+          </ListItem>
+        </Stack>
+      </Paper>
+
+      <Box display="flex" gap="12px" width="100%" flexWrap="wrap">
+        {Object.entries(teams)
+          .slice(0, 3)
+          .map(([teamName, members]) => renderTeam(teamName, members))}
+      </Box>
+
+      <Box display="flex" gap="12px" width="100%" flexWrap="wrap">
+        {Object.entries(teams)
+          .slice(3)
+          .map(([teamName, members]) => renderTeam(teamName, members))}
+      </Box>
 
       <Paper sx={{ p: 2, backgroundColor: "#ffffff", borderRadius: 2, mb: 3 }}>
         <Typography variant="h6" gutterBottom sx={{ color: "#0985F8" }}>
@@ -260,19 +325,33 @@ const ScrumStandupMobile: React.FC = () => {
 
       <Divider sx={{ mb: 2 }} />
 
-      <Button
-        variant="contained"
-        sx={{
-          backgroundColor: "#0985F8",
-          "&:hover": { backgroundColor: "#0667C5" },
-        }}
-        onClick={toggleWheel}
-      >
-        {showWheel ? "Hide Wheel" : "Show Wheel"}
-      </Button>
+      <Box display="flex" justifyContent="space-between" alignItems="center">
+        <Button
+          variant="contained"
+          sx={{
+            backgroundColor: "#0985F8",
+            "&:hover": { backgroundColor: "#0667C5" },
+          }}
+          onClick={toggleWheel}
+        >
+          {showWheel ? "Hide Wheel" : "Show Wheel"}
+        </Button>
+        <Button
+          variant="contained"
+          sx={{
+            backgroundColor: "#0985F8",
+            "&:hover": { backgroundColor: "#0667C5" },
+          }}
+          onClick={onPlayAudio}
+        >
+          Play Sound
+        </Button>
+      </Box>
       {showWheel && (
         <WheelComponent names={Object.entries(scores).map((e) => e[0])} />
       )}
+
+      <audio src="/assets/New.mp3" id="sound-audio" />
     </Container>
   );
 };
