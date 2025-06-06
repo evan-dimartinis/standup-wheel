@@ -26,30 +26,25 @@ const ScrumStandupMobile: React.FC = () => {
   const [newTopic, setNewTopic] = useState("");
   const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
 
+  const [showEvansAnswer, setShowEvansAnswer] = useState(false);
+  const toggleEvansAnswer = () => {
+    setShowEvansAnswer((prev) => !prev);
+  };
+
   const [showScoreboard, setShowScoreboard] = useState(false);
   const toggleScoreboard = () => {
     setShowScoreboard((prev) => !prev);
+  };
+
+  const [showQuestion, setShowQuestion] = useState(false);
+  const toggleQuestion = () => {
+    setShowQuestion((prev) => !prev);
   };
 
   const [showWheel, setShowWheel] = useState(false);
   const toggleWheel = () => {
     setShowWheel((prev) => !prev);
   };
-
-  useEffect(() => {
-    const audio = document.getElementById("sound-audio") as HTMLAudioElement;
-    if (audio) {
-      audio.currentTime = 0; // Reset to start
-      audio.play();
-    }
-
-    /* return () => {
-      if (audioElement) {
-        audioElement.pause();
-        audioElement.currentTime = 0; // Reset playback position
-      }
-    }; */
-  }, []);
 
   const onPlayAudio = () => {
     const audio = document.getElementById("sound-audio") as HTMLAudioElement;
@@ -172,6 +167,14 @@ const ScrumStandupMobile: React.FC = () => {
       // maxWidth="sm"
       sx={{ py: 2, backgroundColor: "#D1E9FF", minHeight: "100vh" }}
     >
+      <Typography
+        variant="h4"
+        align="center"
+        sx={{ color: "#0985F8", mb: 2, fontWeight: "bold" }}
+      >
+        Fun Friday!!!!
+      </Typography>
+
       <Button
         variant="outlined"
         onClick={toggleScoreboard}
@@ -211,6 +214,38 @@ const ScrumStandupMobile: React.FC = () => {
                 </Box>
               ))}
           </Stack>
+        </Paper>
+      )}
+
+      {showQuestion && (
+        <Paper
+          sx={{ mb: 3, p: 2, backgroundColor: "#ffffff", borderRadius: 2 }}
+        >
+          <Typography variant="h6" sx={{ color: "#0985F8" }} gutterBottom>
+            Fun Friday Question: What job would you least want or be the worst
+            at?
+          </Typography>
+
+          <Button
+            onClick={toggleEvansAnswer}
+            variant="outlined"
+            sx={{
+              marginBottom: "8px",
+            }}
+          >
+            {showEvansAnswer ? "Hide" : "Show"} Evan's Answer
+          </Button>
+
+          {showEvansAnswer && (
+            <>
+              <Typography mb="24px">
+                Evan's answer: Anything in a lab. I would be nervous all the
+                time + I have very shaky hands
+              </Typography>
+
+              <Typography>Happy Friday! have a great weekend 🫡</Typography>
+            </>
+          )}
         </Paper>
       )}
 
@@ -336,16 +371,33 @@ const ScrumStandupMobile: React.FC = () => {
         >
           {showWheel ? "Hide Wheel" : "Show Wheel"}
         </Button>
-        <Button
-          variant="contained"
-          sx={{
-            backgroundColor: "#0985F8",
-            "&:hover": { backgroundColor: "#0667C5" },
-          }}
-          onClick={onPlayAudio}
-        >
-          Play Sound
-        </Button>
+
+        <Box display="flex" gap={1}>
+          <Button
+            variant="outlined"
+            sx={{
+              color: "#0985F8",
+              borderColor: "#0985F8",
+              "&:hover": {
+                borderColor: "#0667C5",
+                backgroundColor: "#E3F2FD",
+              },
+            }}
+            onClick={toggleQuestion}
+          >
+            {showQuestion ? "Hide" : "Show"} Question
+          </Button>
+          <Button
+            variant="contained"
+            sx={{
+              backgroundColor: "#0985F8",
+              "&:hover": { backgroundColor: "#0667C5" },
+            }}
+            onClick={onPlayAudio}
+          >
+            Play Sound
+          </Button>
+        </Box>
       </Box>
       {showWheel && (
         <WheelComponent names={Object.entries(scores).map((e) => e[0])} />
