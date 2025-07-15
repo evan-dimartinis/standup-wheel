@@ -69,32 +69,81 @@ const ScrumStandupMobile: React.FC = () => {
     | "Alex Blackson"
     | "Maggie Smith"
     | "Christian Lopez"
-    | "Gabe Szczepanek";
+    | "Gabe Szczepanek"
+    | "Sam Rozenfeld";
+
+  const absenteeMembers: TeamMember[] = ["Marissa Sileo"];
 
   const teams: { [key: string]: TeamMember[] } = {
     AI: ["Travis McAuley", "Gus Price", "Jaime Riley", "Craig O'Donnell"],
-    Core: ["Marissa Sileo", "Yosh Talwar", "Phil Gray"],
+    Core: ["Marissa Sileo", "Yosh Talwar", "Phil Gray", "Sam Rozenfeld"],
     RCM: ["Evan DiMartinis", "Camille Jwo", "Jonah Offitzer"],
     Product: ["George Uehling", "Alex Blackson"],
     Design: ["Maggie Smith", "Christian Lopez"],
   };
 
+  /* const allMembers: { member: TeamMember; petPeeve: string }[] = [
+    { member: "George Uehling", petPeeve: "Left Lane Campers" },
+    {
+      member: "Yosh Talwar",
+      petPeeve:
+        "When I pause a YouTube video to examine some detail and they overlay stupid thumbnails for other videos they think I should watch, right over where I need to look!",
+    },
+    {
+      member: "Evan DiMartinis",
+      petPeeve: "Being late to things without good reason/meandering",
+    },
+    {
+      member: "Jaime Riley",
+      petPeeve:
+        "Specifically my mother chewing with her mouth open and talking",
+    },
+    { member: "Phil Gray", petPeeve: "Line Cutters" },
+    {
+      member: "Travis McAuley",
+      petPeeve: "Small dogs with high pitched barks that yip away non stop",
+    },
+    {
+      member: "Maggie Smith",
+      petPeeve:
+        "When you go on vacation and then get sick and can’t make it into the office but no one waters your plant and it dies",
+    },
+    {
+      member: "Christian Lopez",
+      petPeeve: "Talking on speakerphone in public places",
+    },
+    {
+      member: "Craig O'Donnell",
+      petPeeve: "Waiting around at the doctor's office",
+    },
+    {
+      member: "Alex Blackson",
+      petPeeve: "People that only want to talk about themselves",
+    },
+    {
+      member: "Camille Jwo",
+      petPeeve:
+        "Drivers honking at traffic as if it's going to make a difference",
+    },
+  ]; */
+
   const scores: Record<TeamMember, number> = {
     "Evan DiMartinis": 0,
-    "Camille Jwo": 0,
-    "Jonah Offitzer": 2,
-    "Yosh Talwar": 2,
-    "Phil Gray": 0,
+    "Camille Jwo": 3,
+    "Jonah Offitzer": 4,
+    "Yosh Talwar": 4,
+    "Phil Gray": 2,
     "Marissa Sileo": 0,
     "Gus Price": 1,
-    "Travis McAuley": 0,
-    "Jaime Riley": 1,
-    "Craig O'Donnell": 0,
+    "Travis McAuley": 1,
+    "Jaime Riley": 3,
+    "Craig O'Donnell": 1,
     "George Uehling": 2,
-    "Alex Blackson": 0,
-    "Maggie Smith": 1,
-    "Christian Lopez": 0,
-    "Gabe Szczepanek": 1,
+    "Alex Blackson": 1,
+    "Maggie Smith": 2,
+    "Christian Lopez": 1,
+    "Gabe Szczepanek": 2,
+    "Sam Rozenfeld": 0,
   };
 
   const [checked, setChecked] = useState<{ [key: string]: boolean }>({});
@@ -139,7 +188,7 @@ const ScrumStandupMobile: React.FC = () => {
             key={name}
             control={
               <Checkbox
-                checked={!!checked[name]}
+                checked={!!checked[name] || absenteeMembers.includes(name)}
                 onChange={() => handleCheck(name)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
@@ -172,23 +221,23 @@ const ScrumStandupMobile: React.FC = () => {
         align="center"
         sx={{ color: "#0985F8", mb: 2, fontWeight: "bold" }}
       >
-        Fun Friday!!!!
+        Tabloid Tuesday
       </Typography>
 
       <Button
         variant="outlined"
-        onClick={toggleScoreboard}
         sx={{
-          mb: 2,
           color: "#0985F8",
           borderColor: "#0985F8",
+          mb: 2,
           "&:hover": {
             borderColor: "#0667C5",
             backgroundColor: "#E3F2FD",
           },
         }}
+        onClick={toggleQuestion}
       >
-        {showScoreboard ? "Hide Scoreboard" : "Show Scoreboard"}
+        {showQuestion ? "Hide" : "Show"} Question
       </Button>
       {showScoreboard && (
         <Paper
@@ -221,9 +270,16 @@ const ScrumStandupMobile: React.FC = () => {
         <Paper
           sx={{ mb: 3, p: 2, backgroundColor: "#ffffff", borderRadius: 2 }}
         >
+          {/* <img
+            src="assets/scorpion-king.jpeg"
+            alt="Scorpion King"
+            width="768px"
+            height="432px"
+          /> */}
           <Typography variant="h6" sx={{ color: "#0985F8" }} gutterBottom>
-            Fun Friday Question: What job would you least want or be the worst
-            at?
+            Katy Perry and Russell Brand met on the set of this 2010 Musical
+            Comedy film starring Brand and Jonah Hill, which resulted in a
+            marriage just 4 months later. What is the name of the film?
           </Typography>
 
           <Button
@@ -233,48 +289,58 @@ const ScrumStandupMobile: React.FC = () => {
               marginBottom: "8px",
             }}
           >
-            {showEvansAnswer ? "Hide" : "Show"} Evan's Answer
+            {showEvansAnswer ? "Hide" : "Show"} Answer
           </Button>
 
           {showEvansAnswer && (
             <>
               <Typography mb="24px">
-                Evan's answer: Anything in a lab. I would be nervous all the
-                time + I have very shaky hands
+                Get Him to the Greek. (Fun facts, her scene was cut from the
+                movie, they had a Hindu marriage ceremony, and their marriage
+                lasted 14 months)
               </Typography>
-
-              <Typography>Happy Friday! have a great weekend 🫡</Typography>
             </>
           )}
         </Paper>
       )}
 
-      <Paper
+      {/* <Paper
         sx={{
           mb: 3,
           p: 2,
           backgroundColor: "#ffffff",
           borderRadius: 2,
           border: "2px solid #0985F8",
+          display: "flex",
+          flexDirection: "column",
         }}
       >
-        <Typography variant="h6" sx={{ color: "#0985F8" }} gutterBottom>
-          Retro Reminders!
-        </Typography>
-        <Stack spacing={1}>
-          <ListItem>
-            <Typography>Do holistic reviews every time through</Typography>
-          </ListItem>
-          <ListItem>
-            <Typography>
-              Don't cram work at the end of your sprint - stay balanced
-            </Typography>
-          </ListItem>
-          <ListItem>
-            <Typography>Be open to new code patterns!</Typography>
-          </ListItem>
-        </Stack>
-      </Paper>
+        {allMembers.map(({ member, petPeeve }) => (
+          <FormControlLabel
+            key={member}
+            disabled
+            control={
+              <Checkbox
+                checked={!!checked[member]}
+                onChange={() => handleCheck(member)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleCheck(member);
+                  }
+                }}
+                sx={{
+                  color: "#0985F8",
+                  "&.Mui-checked": { color: "#0985F8" },
+                }}
+              />
+            }
+            label={petPeeve}
+            sx={{
+              backgroundColor: !!checked[member] ? "#E3F2FD" : "transparent",
+            }}
+          />
+        ))}
+      </Paper> */}
 
       <Box display="flex" gap="12px" width="100%" flexWrap="wrap">
         {Object.entries(teams)
@@ -375,6 +441,7 @@ const ScrumStandupMobile: React.FC = () => {
         <Box display="flex" gap={1}>
           <Button
             variant="outlined"
+            onClick={toggleScoreboard}
             sx={{
               color: "#0985F8",
               borderColor: "#0985F8",
@@ -383,9 +450,8 @@ const ScrumStandupMobile: React.FC = () => {
                 backgroundColor: "#E3F2FD",
               },
             }}
-            onClick={toggleQuestion}
           >
-            {showQuestion ? "Hide" : "Show"} Question
+            {showScoreboard ? "Hide Scoreboard" : "Show Scoreboard"}
           </Button>
           <Button
             variant="contained"
@@ -400,10 +466,14 @@ const ScrumStandupMobile: React.FC = () => {
         </Box>
       </Box>
       {showWheel && (
-        <WheelComponent names={Object.entries(scores).map((e) => e[0])} />
+        <WheelComponent
+          names={Object.entries(scores)
+            .filter((x) => !absenteeMembers.includes(x[0] as TeamMember))
+            .map((e) => e[0])}
+        />
       )}
 
-      <audio src="/assets/New.mp3" id="sound-audio" />
+      <audio src="/assets/Secrets.mp3" id="sound-audio" />
     </Container>
   );
 };
