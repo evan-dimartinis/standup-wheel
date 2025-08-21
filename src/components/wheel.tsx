@@ -162,7 +162,7 @@ const WheelComponent = (props: { names: string[] }) => {
     setSelectedName(null);
 
     // Play the jingle
-    // document.getElementById("sound-audio") as HTMLAudioElement).play();
+    (document.getElementById("sound-audio") as HTMLAudioElement).play();
 
     // Calculate random rotation (5-10 full spins plus random position)
     const spinCount = 5 + Math.random() * 5;

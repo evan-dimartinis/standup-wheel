@@ -62,7 +62,6 @@ const ScrumStandupMobile: React.FC = () => {
     | "Phil Gray"
     | "Marissa Sileo"
     | "Gus Price"
-    | "Travis McAuley"
     | "Jaime Riley"
     | "Craig O'Donnell"
     | "George Uehling"
@@ -70,15 +69,16 @@ const ScrumStandupMobile: React.FC = () => {
     | "Maggie Smith"
     | "Christian Lopez"
     | "Gabe Szczepanek"
-    | "Sam Rozenfeld";
+    | "Sam Rozenfeld"
+    | "Vanessa Barker";
 
-  const absenteeMembers: TeamMember[] = ["Marissa Sileo"];
+  const absenteeMembers: TeamMember[] = [];
 
   const teams: { [key: string]: TeamMember[] } = {
-    AI: ["Travis McAuley", "Gus Price", "Jaime Riley", "Craig O'Donnell"],
+    AI: ["Gus Price", "Jaime Riley", "Craig O'Donnell"],
     Core: ["Marissa Sileo", "Yosh Talwar", "Phil Gray", "Sam Rozenfeld"],
     RCM: ["Evan DiMartinis", "Camille Jwo", "Jonah Offitzer"],
-    Product: ["George Uehling", "Alex Blackson"],
+    Product: ["George Uehling", "Alex Blackson", "Vanessa Barker"],
     Design: ["Maggie Smith", "Christian Lopez"],
   };
 
@@ -131,19 +131,19 @@ const ScrumStandupMobile: React.FC = () => {
     "Evan DiMartinis": 0,
     "Camille Jwo": 3,
     "Jonah Offitzer": 4,
-    "Yosh Talwar": 4,
+    "Yosh Talwar": 5,
     "Phil Gray": 2,
     "Marissa Sileo": 0,
-    "Gus Price": 1,
-    "Travis McAuley": 1,
-    "Jaime Riley": 3,
-    "Craig O'Donnell": 1,
+    "Gus Price": 3,
+    "Jaime Riley": 7,
+    "Craig O'Donnell": 2,
     "George Uehling": 2,
-    "Alex Blackson": 1,
+    "Alex Blackson": 4,
     "Maggie Smith": 2,
     "Christian Lopez": 1,
-    "Gabe Szczepanek": 2,
-    "Sam Rozenfeld": 0,
+    "Gabe Szczepanek": 4,
+    "Sam Rozenfeld": 4,
+    "Vanessa Barker": 0,
   };
 
   const [checked, setChecked] = useState<{ [key: string]: boolean }>({});
@@ -221,7 +221,7 @@ const ScrumStandupMobile: React.FC = () => {
         align="center"
         sx={{ color: "#0985F8", mb: 2, fontWeight: "bold" }}
       >
-        Tabloid Tuesday
+        Good Morning!
       </Typography>
 
       <Button
@@ -239,6 +239,23 @@ const ScrumStandupMobile: React.FC = () => {
       >
         {showQuestion ? "Hide" : "Show"} Question
       </Button>
+
+      <Button
+        variant="outlined"
+        sx={{
+          color: "#0985F8",
+          borderColor: "#0985F8",
+          mb: 2,
+          "&:hover": {
+            borderColor: "#0667C5",
+            backgroundColor: "#E3F2FD",
+          },
+        }}
+        onClick={toggleScoreboard}
+      >
+        {showScoreboard ? "Hide" : "Show"} Scoreboard
+      </Button>
+
       {showScoreboard && (
         <Paper
           sx={{ mb: 3, p: 2, backgroundColor: "#ffffff", borderRadius: 2 }}
@@ -270,16 +287,9 @@ const ScrumStandupMobile: React.FC = () => {
         <Paper
           sx={{ mb: 3, p: 2, backgroundColor: "#ffffff", borderRadius: 2 }}
         >
-          {/* <img
-            src="assets/scorpion-king.jpeg"
-            alt="Scorpion King"
-            width="768px"
-            height="432px"
-          /> */}
           <Typography variant="h6" sx={{ color: "#0985F8" }} gutterBottom>
-            Katy Perry and Russell Brand met on the set of this 2010 Musical
-            Comedy film starring Brand and Jonah Hill, which resulted in a
-            marriage just 4 months later. What is the name of the film?
+            What small creature, often seen after rain, has been known to
+            hibernate for up to three years when facing drought?
           </Typography>
 
           <Button
@@ -294,11 +304,7 @@ const ScrumStandupMobile: React.FC = () => {
 
           {showEvansAnswer && (
             <>
-              <Typography mb="24px">
-                Get Him to the Greek. (Fun facts, her scene was cut from the
-                movie, they had a Hindu marriage ceremony, and their marriage
-                lasted 14 months)
-              </Typography>
+              <Typography mb="24px">Snails</Typography>
             </>
           )}
         </Paper>
@@ -469,11 +475,11 @@ const ScrumStandupMobile: React.FC = () => {
         <WheelComponent
           names={Object.entries(scores)
             .filter((x) => !absenteeMembers.includes(x[0] as TeamMember))
-            .map((e) => e[0])}
+            .map((e) => e[0].split(" ")[0])}
         />
       )}
 
-      <audio src="/assets/Secrets.mp3" id="sound-audio" />
+      <audio src="/assets/Catastrophe.mp3" id="sound-audio" />
     </Container>
   );
 };
