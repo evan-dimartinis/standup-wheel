@@ -29,6 +29,7 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import { grey } from "@mui/material/colors";
 import { Database, RCMTeam } from "../db-utils/supabase";
+import StandupAssignments from "./StandupAssignments";
 
 function emptyToNull(s: string) {
   return s.trim() === "" ? null : s;
@@ -328,6 +329,7 @@ function StandupsPage() {
               No updates yet for today.
             </Typography>
           )}
+          <StandupAssignments />
         </Stack>
       )}
     </Container>

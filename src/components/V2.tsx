@@ -72,8 +72,6 @@ const ScrumStandupMobile: React.FC = () => {
     | "Sam Rozenfeld"
     | "Vanessa Barker";
 
-  const absenteeMembers: TeamMember[] = ["Marissa Sileo"];
-
   const teams: { [key: string]: TeamMember[] } = {
     AI: ["Gus Price", "Jaime Riley", "Craig O'Donnell"],
     Core: ["Marissa Sileo", "Yosh Talwar", "Phil Gray", "Sam Rozenfeld"],
@@ -81,6 +79,8 @@ const ScrumStandupMobile: React.FC = () => {
     Product: ["George Uehling", "Alex Blackson", "Vanessa Barker"],
     Design: ["Maggie Smith", "Christian Lopez"],
   };
+
+  const absenteeMembers: TeamMember[] = ["Marissa Sileo"];
 
   /* const allMembers: { member: TeamMember; petPeeve: string }[] = [
     { member: "George Uehling", petPeeve: "Left Lane Campers" },
