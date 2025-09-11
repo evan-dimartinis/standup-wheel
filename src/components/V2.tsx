@@ -72,7 +72,7 @@ const ScrumStandupMobile: React.FC = () => {
     | "Sam Rozenfeld"
     | "Vanessa Barker";
 
-  const absenteeMembers: TeamMember[] = [];
+  const absenteeMembers: TeamMember[] = ["Marissa Sileo"];
 
   const teams: { [key: string]: TeamMember[] } = {
     AI: ["Gus Price", "Jaime Riley", "Craig O'Donnell"],
@@ -129,20 +129,20 @@ const ScrumStandupMobile: React.FC = () => {
 
   const scores: Record<TeamMember, number> = {
     "Evan DiMartinis": 0,
-    "Camille Jwo": 3,
-    "Jonah Offitzer": 4,
+    "Camille Jwo": 5,
+    "Jonah Offitzer": 6,
     "Yosh Talwar": 5,
-    "Phil Gray": 2,
+    "Phil Gray": 4,
     "Marissa Sileo": 0,
     "Gus Price": 3,
-    "Jaime Riley": 7,
-    "Craig O'Donnell": 2,
+    "Jaime Riley": 8,
+    "Craig O'Donnell": 4,
     "George Uehling": 2,
     "Alex Blackson": 4,
     "Maggie Smith": 2,
     "Christian Lopez": 1,
     "Gabe Szczepanek": 4,
-    "Sam Rozenfeld": 4,
+    "Sam Rozenfeld": 6,
     "Vanessa Barker": 0,
   };
 
@@ -221,7 +221,7 @@ const ScrumStandupMobile: React.FC = () => {
         align="center"
         sx={{ color: "#0985F8", mb: 2, fontWeight: "bold" }}
       >
-        Good Morning!
+        WED-NES-DAY
       </Typography>
 
       <Button
@@ -288,8 +288,8 @@ const ScrumStandupMobile: React.FC = () => {
           sx={{ mb: 3, p: 2, backgroundColor: "#ffffff", borderRadius: 2 }}
         >
           <Typography variant="h6" sx={{ color: "#0985F8" }} gutterBottom>
-            What small creature, often seen after rain, has been known to
-            hibernate for up to three years when facing drought?
+            The Mojito originated from this island nation, developed originally
+            by sailors to help combat scurvy (which I do NOT have, btw)
           </Typography>
 
           <Button
@@ -304,7 +304,7 @@ const ScrumStandupMobile: React.FC = () => {
 
           {showEvansAnswer && (
             <>
-              <Typography mb="24px">Snails</Typography>
+              <Typography mb="24px">Cuba</Typography>
             </>
           )}
         </Paper>

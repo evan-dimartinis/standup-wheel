@@ -13,6 +13,7 @@ import {
 import { format } from "date-fns";
 import WheelComponent from "./components/wheel";
 import V2 from "./components/V2";
+import V3 from "./v3/V3";
 
 // Define interfaces
 interface ChecklistItem {
@@ -151,7 +152,7 @@ const App: React.FC = () => {
     return EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
   };
 
-  return <V2 />;
+  return <V3 />;
 
   return (
     <Box
