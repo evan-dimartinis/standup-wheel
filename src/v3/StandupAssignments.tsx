@@ -95,57 +95,43 @@ export function getStandupAssignments(
   teamRoster: { [key: string]: TeamMember[] } = teams,
   absent: TeamMember[] = ABSENT
 ): Assignments {
-  const teamNames = Object.keys(teamRoster);
-  const n = teamNames.length;
-  if (n < 2) throw new Error("Need at least 2 teams for rotation.");
+  // Gather all present members (teams ignored for matching)
+  const present: TeamMember[] = Object.values(teamRoster)
+    .flat()
+    .filter((m): m is TeamMember => !!m && !absent.includes(m))
+    .sort();
 
-  const week = isoWeekNumber(date);
-  const offset = (week % (n - 1)) + 1; // 1..n-1 ensures derangement
   const dayIndex = isoDayIndex(date);
+  const week = isoWeekNumber(date);
 
-  const teamReadMap: { [readingTeam: string]: string } = {};
-  for (let i = 0; i < n; i++) {
-    const readingTeam = teamNames[i];
-    const targetTeam = teamNames[(i + offset) % n];
-    teamReadMap[readingTeam] = targetTeam;
+  // Build a deterministic derangement by rotating the sorted list by k
+  // k is 1..n-1 so nobody gets themselves
+  const n = present.length;
+  let pairs: Record<string, TeamMember> = {};
+  if (n >= 2) {
+    const k = 1 + ((week * 7 + dayIndex) % (n - 1));
+    for (let i = 0; i < n; i++) {
+      const reader = present[i];
+      const target = present[(i + k) % n];
+      pairs[reader] = target;
+    }
   }
 
-  const result: Assignments["detail"] = {};
-
-  for (const readingTeam of teamNames) {
-    const targetTeam = teamReadMap[readingTeam];
-    const readers = [...(teamRoster[readingTeam] ?? [])]
-      .filter((m) => !absent.includes(m))
-      .sort();
-    const targets = [...(teamRoster[targetTeam] ?? [])]
-      .filter((m) => !absent.includes(m))
-      .sort();
-
+  // Repackage into the existing per-team structure so the UI doesn’t need changes
+  const detail: Assignments["detail"] = {};
+  for (const teamName of Object.keys(teamRoster)) {
+    const teamMembers = (teamRoster[teamName] ?? []).filter(
+      (m): m is TeamMember => !!m && !absent.includes(m)
+    );
     const assignments: { [reader: string]: TeamMember[] } = {};
-    readers.forEach((r) => (assignments[r] = []));
-
-    if (readers.length === 0 || targets.length === 0) {
-      result[readingTeam] = { readsFrom: targetTeam, assignments };
-      continue;
-    }
-
-    for (let k = 0; k < targets.length; k++) {
-      const readerIdx = (k + dayIndex) % readers.length;
-      const reader = readers[readerIdx];
-      assignments[reader].push(targets[k]);
-    }
-
-    if (readers.length > 1 && targets.length > readers.length) {
-      const rotated = rotateArray(readers, dayIndex % readers.length);
-      const remapped: { [reader: string]: TeamMember[] } = {};
-      rotated.forEach((r, i) => {
-        const originalReader = readers[i];
-        remapped[r] = assignments[originalReader];
-      });
-      result[readingTeam] = { readsFrom: targetTeam, assignments: remapped };
-    } else {
-      result[readingTeam] = { readsFrom: targetTeam, assignments };
-    }
+    teamMembers.sort().forEach((reader) => {
+      const target = pairs[reader];
+      assignments[reader] = target ? [target] : []; // exactly one or none if <2 present
+    });
+    detail[teamName] = {
+      readsFrom: "All",
+      assignments,
+    };
   }
 
   return {
@@ -154,8 +140,11 @@ export function getStandupAssignments(
       date: date.toISOString().slice(0, 10),
       dayOfWeekISO: dayIndex,
     },
-    teamPairings: teamReadMap,
-    detail: result,
+    // Teams are not used for pairing anymore; keep field for UI compatibility
+    teamPairings: Object.fromEntries(
+      Object.keys(teamRoster).map((t) => [t, "All"])
+    ),
+    detail,
   };
 }
 
