@@ -6,6 +6,17 @@ export type RCMTeam = "RCM" | "Core" | "AI" | "Design" | "Product";
 export type Database = {
   public: {
     Tables: {
+      posts: {
+        Row: {
+          id: number;
+          standup_date: string;
+          description: string;
+        };
+        Insert: {
+          standup_date: string;
+          description: string;
+        };
+      };
       standup_entries: {
         Row: {
           person: string; // <- new identifier

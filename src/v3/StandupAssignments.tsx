@@ -53,7 +53,7 @@ export const teams: { [key: string]: TeamMember[] } = {
 };
 
 // Hardcoded absentees (edit this list as needed)
-export const ABSENT: TeamMember[] = ["Camille Jwo"];
+export const ABSENT: TeamMember[] = ["Camille Jwo", "Craig O'Donnell"];
 
 // ==== Rotation Logic (deterministic by date) ====
 function rotateArray<T>(arr: T[], k: number): T[] {
@@ -548,7 +548,7 @@ export default function StandupAssignments({
           </Grid>
 
           {/* Linear Checklist: go down the list easily */}
-          <Grid spacing={{ xs: 12 }}>
+          {/* <Grid spacing={{ xs: 12 }}>
             <Paper
               elevation={0}
               sx={{
@@ -619,7 +619,7 @@ export default function StandupAssignments({
                 ))}
               </List>
             </Paper>
-          </Grid>
+          </Grid> */}
         </Grid>
 
         <Box sx={{ mt: 3 }}>

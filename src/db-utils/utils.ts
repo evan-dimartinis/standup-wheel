@@ -1,12 +1,24 @@
+import { startOfDay } from "date-fns";
 import {
   RCMTeam,
   getSupabaseClient as supabase,
   type Database,
 } from "./supabase";
 
-type Row = Database["public"]["Tables"]["standup_entries"]["Row"];
-type Insert = Database["public"]["Tables"]["standup_entries"]["Insert"];
+/** Types for standup entries */
+export type StandupRow = Database["public"]["Tables"]["standup_entries"]["Row"];
+export type StandupInsert =
+  Database["public"]["Tables"]["standup_entries"]["Insert"];
 
+/** Types for post-standups (free-text notes after standup) */
+export type PostRow = Database["public"]["Tables"]["posts"]["Row"];
+export type PostInsert = Database["public"]["Tables"]["posts"]["Insert"];
+
+/** Configurable labels/prompts used in the Standups UI */
+export const WILDCARD_LABEL = "What should I put for a prompt today?";
+export const WILDCARD_PLACEHOLDER = "";
+
+/** Returns YYYY-MM-DD in local time */
 export function localISODate(d = new Date()) {
   const yyyy = d.getFullYear();
   const mm = String(d.getMonth() + 1).padStart(2, "0");
@@ -14,24 +26,26 @@ export function localISODate(d = new Date()) {
   return `${yyyy}-${mm}-${dd}`;
 }
 
+/** Create or update a standup entry for a given person/date */
 export async function upsertStandupEntry(input: {
   person: string;
   team: RCMTeam;
   standupDate: string; // YYYY-MM-DD
-  yesterday?: string | null;
-  today?: string | null;
-  blockers?: string | null;
-  wildcard?: string | null;
-}): Promise<Row> {
+  yesterday: string | null;
+  today: string | null;
+  blockers: string | null;
+  wildcard: string | null;
+}): Promise<StandupRow> {
   const s = supabase();
-  const payload: Insert = {
-    person: input.person.trim(),
+
+  const payload: Partial<StandupInsert> = {
+    person: input.person,
     team: input.team,
     standup_date: input.standupDate,
-    yesterday: input.yesterday ?? null,
-    today: input.today ?? null,
-    blockers: input.blockers ?? null,
-    wildcard: input.wildcard ?? null,
+    yesterday: input.yesterday,
+    today: input.today,
+    blockers: input.blockers,
+    wildcard: input.wildcard,
   };
 
   const { data, error } = await s
@@ -41,10 +55,13 @@ export async function upsertStandupEntry(input: {
     .single();
 
   if (error) throw error;
-  return data as Row;
+  return data as StandupRow;
 }
 
-export async function listEntriesForDate(standupDate: string): Promise<Row[]> {
+/** Fetch all standup entries for a specific date */
+export async function listEntriesForDate(
+  standupDate: string
+): Promise<StandupRow[]> {
   const s = supabase();
   const { data, error } = await s
     .from("standup_entries")
@@ -53,5 +70,39 @@ export async function listEntriesForDate(standupDate: string): Promise<Row[]> {
     .order("person", { ascending: true });
 
   if (error) throw error;
-  return (data ?? []) as Row[];
+  return (data ?? []) as StandupRow[];
+}
+
+/** Create or update a "post-standup" note for a date */
+export async function upsertStandupPost(input: {
+  standupDate: string; // YYYY-MM-DD
+  description: string;
+}): Promise<PostRow> {
+  const s = supabase();
+
+  const payload: Partial<PostInsert> = {
+    standup_date: input.standupDate,
+    description: input.description,
+  };
+
+  const { data, error } = await s
+    .from("posts")
+    .upsert(payload)
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data as PostRow;
+}
+
+export async function listPostStandups(date?: string) {
+  const s = supabase();
+
+  const { data, error } = await s
+    .from("posts")
+    .select("*")
+    .eq("standup_date", date || startOfDay(new Date()).toString());
+
+  if (error) throw error;
+  return data as PostRow[];
 }
