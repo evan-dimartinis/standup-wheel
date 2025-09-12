@@ -15,7 +15,8 @@ export type PostRow = Database["public"]["Tables"]["posts"]["Row"];
 export type PostInsert = Database["public"]["Tables"]["posts"]["Insert"];
 
 /** Configurable labels/prompts used in the Standups UI */
-export const WILDCARD_LABEL = "What should I put for a prompt today?";
+export const WILDCARD_LABEL =
+  "What is something that brought you joy this week?";
 export const WILDCARD_PLACEHOLDER = "";
 
 /** Returns YYYY-MM-DD in local time */
