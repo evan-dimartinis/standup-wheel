@@ -53,11 +53,7 @@ export const teams: { [key: string]: TeamMember[] } = {
 };
 
 // Hardcoded absentees (edit this list as needed)
-export const ABSENT: TeamMember[] = [
-  "Vanessa Barker",
-  "Craig O'Donnell",
-  "Yosh Talwar",
-];
+export const ABSENT: TeamMember[] = [];
 
 // ==== Rotation Logic (deterministic by date) ====
 function rotateArray<T>(arr: T[], k: number): T[] {
