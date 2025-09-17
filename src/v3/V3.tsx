@@ -555,7 +555,7 @@ function StandupsPage() {
               >
                 <Box display="flex" flexDirection="column" gap="8px">
                   <Typography variant="h5" gutterBottom fontWeight={800}>
-                    Post‑standup notes
+                    Post-standup notes
                   </Typography>
                   {posts.map((p) => {
                     return (

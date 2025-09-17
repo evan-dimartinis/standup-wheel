@@ -53,7 +53,7 @@ export const teams: { [key: string]: TeamMember[] } = {
 };
 
 // Hardcoded absentees (edit this list as needed)
-export const ABSENT: TeamMember[] = [];
+export const ABSENT: TeamMember[] = ["Marissa Sileo"];
 
 // ==== Rotation Logic (deterministic by date) ====
 function rotateArray<T>(arr: T[], k: number): T[] {
@@ -250,7 +250,7 @@ export default function StandupAssignments({
 
   return (
     <Box sx={{ bgcolor: "#fafafa", minHeight: "100vh" }}>
-      <AppBar position="sticky" color="default" elevation={0}>
+      {/* <AppBar position="sticky" color="default" elevation={0}>
         <Toolbar>
           <Typography variant="h6" sx={{ fontWeight: 700, mr: 3 }}>
             Standup Reading Assignments
@@ -295,7 +295,7 @@ export default function StandupAssignments({
             />
           </Stack>
         </Toolbar>
-      </AppBar>
+      </AppBar> */}
 
       <Container maxWidth="lg" sx={{ py: 3 }}>
         <Grid container spacing={3}>
@@ -336,7 +336,7 @@ export default function StandupAssignments({
           )}
 
           {/* My Assignments */}
-          <Grid spacing={{ xs: 12, md: 5 }}>
+          {/* <Grid spacing={{ xs: 12, md: 5 }}>
             <Paper
               elevation={0}
               sx={{
@@ -402,7 +402,7 @@ export default function StandupAssignments({
                 </Box>
               )}
             </Paper>
-          </Grid>
+          </Grid> */}
 
           {/* Team Pairings Overview */}
           <Grid spacing={{ xs: 12, md: 7 }}>
@@ -445,7 +445,7 @@ export default function StandupAssignments({
                               variant="subtitle2"
                               sx={{ fontWeight: 700 }}
                             >
-                              {readingTeam} → {targetTeam}
+                              {readingTeam}
                             </Typography>
                             <Tooltip title="Readers · Targets">
                               <Chip
@@ -460,18 +460,14 @@ export default function StandupAssignments({
                               const assigned = (section.assignments[r] ?? [])
                                 .slice()
                                 .sort();
-                              const isMe = r === me;
+                              /* const isMe = r === me; */
                               return (
                                 <ListItem
                                   key={r}
                                   sx={{
                                     border: "1px solid",
-                                    borderColor: isMe
-                                      ? "text.primary"
-                                      : "divider",
-                                    bgcolor: isMe
-                                      ? "grey.50"
-                                      : "background.paper",
+                                    borderColor: "divider",
+                                    bgcolor: "background.paper",
                                     borderRadius: 1,
                                     mb: 1,
                                   }}
@@ -485,19 +481,12 @@ export default function StandupAssignments({
                                     primary={
                                       <Typography
                                         variant="body2"
-                                        sx={{ fontWeight: isMe ? 700 : 500 }}
+                                        sx={{ fontWeight: 500 }}
                                       >
                                         {r}{" "}
-                                        {isMe && (
-                                          <Chip
-                                            size="small"
-                                            label="you"
-                                            sx={{ ml: 1 }}
-                                          />
-                                        )}
                                       </Typography>
                                     }
-                                    secondary={
+                                    /* secondary={
                                       assigned.length > 0 ? (
                                         <Stack
                                           direction="row"
@@ -522,7 +511,7 @@ export default function StandupAssignments({
                                           No assignment today.
                                         </Typography>
                                       )
-                                    }
+                                    } */
                                   />
                                 </ListItem>
                               );
