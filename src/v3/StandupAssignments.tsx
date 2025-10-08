@@ -526,7 +526,7 @@ export default function StandupAssignments({
           </Grid>
 
           {/* Linear Checklist: go down the list easily */}
-          {/* <Grid spacing={{ xs: 12 }}>
+          <Grid spacing={{ xs: 12 }}>
             <Paper
               elevation={0}
               sx={{
@@ -555,12 +555,12 @@ export default function StandupAssignments({
                 {flat.map(({ id, readingTeam, targetTeam, reader, target }) => (
                   <ListItem
                     key={id}
-                    secondaryAction={
+                    /* secondaryAction={
                       <Chip
                         size="small"
                         label={`${readingTeam} → ${targetTeam}`}
                       />
-                    }
+                    } */
                   >
                     <Checkbox
                       edge="start"
@@ -584,12 +584,12 @@ export default function StandupAssignments({
                           >
                             {reader}
                           </Typography>
-                          <Typography variant="body2">reads</Typography>
+                          {/* <Typography variant="body2">reads</Typography>
                           <Chip
                             size="small"
                             label={target}
                             variant="outlined"
-                          />
+                          /> */}
                         </Stack>
                       }
                     />
@@ -597,7 +597,7 @@ export default function StandupAssignments({
                 ))}
               </List>
             </Paper>
-          </Grid> */}
+          </Grid>
         </Grid>
 
         <Box sx={{ mt: 3 }}>

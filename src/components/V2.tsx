@@ -63,7 +63,6 @@ const ScrumStandupMobile: React.FC = () => {
     | "Marissa Sileo"
     | "Gus Price"
     | "Jaime Riley"
-    | "Craig O'Donnell"
     | "George Uehling"
     | "Alex Blackson"
     | "Maggie Smith"
@@ -73,14 +72,20 @@ const ScrumStandupMobile: React.FC = () => {
     | "Vanessa Barker";
 
   const teams: { [key: string]: TeamMember[] } = {
-    AI: ["Gus Price", "Jaime Riley", "Craig O'Donnell"],
-    Core: ["Marissa Sileo", "Yosh Talwar", "Phil Gray", "Sam Rozenfeld"],
+    GUS: ["Gus Price"],
+    Core: [
+      "Marissa Sileo",
+      "Yosh Talwar",
+      "Phil Gray",
+      "Sam Rozenfeld",
+      "Jaime Riley",
+    ],
     RCM: ["Evan DiMartinis", "Camille Jwo", "Jonah Offitzer"],
     Product: ["George Uehling", "Alex Blackson", "Vanessa Barker"],
     Design: ["Maggie Smith", "Christian Lopez"],
   };
 
-  const absenteeMembers: TeamMember[] = ["Marissa Sileo"];
+  const absenteeMembers: TeamMember[] = [];
 
   /* const allMembers: { member: TeamMember; petPeeve: string }[] = [
     { member: "George Uehling", petPeeve: "Left Lane Campers" },
@@ -129,18 +134,18 @@ const ScrumStandupMobile: React.FC = () => {
 
   const scores: Record<TeamMember, number> = {
     "Evan DiMartinis": 0,
-    "Camille Jwo": 5,
-    "Jonah Offitzer": 6,
+    "Camille Jwo": 6,
+    "Jonah Offitzer": 7,
     "Yosh Talwar": 5,
     "Phil Gray": 4,
     "Marissa Sileo": 0,
     "Gus Price": 3,
     "Jaime Riley": 8,
-    "Craig O'Donnell": 4,
+    // "Craig O'Donnell": 4,
     "George Uehling": 2,
-    "Alex Blackson": 4,
+    "Alex Blackson": 5,
     "Maggie Smith": 2,
-    "Christian Lopez": 1,
+    "Christian Lopez": 3,
     "Gabe Szczepanek": 4,
     "Sam Rozenfeld": 6,
     "Vanessa Barker": 0,
@@ -221,7 +226,7 @@ const ScrumStandupMobile: React.FC = () => {
         align="center"
         sx={{ color: "#0985F8", mb: 2, fontWeight: "bold" }}
       >
-        WED-NES-DAY
+        DEMOS DEMOS DEMOS
       </Typography>
 
       <Button
@@ -288,8 +293,8 @@ const ScrumStandupMobile: React.FC = () => {
           sx={{ mb: 3, p: 2, backgroundColor: "#ffffff", borderRadius: 2 }}
         >
           <Typography variant="h6" sx={{ color: "#0985F8" }} gutterBottom>
-            The Mojito originated from this island nation, developed originally
-            by sailors to help combat scurvy (which I do NOT have, btw)
+            A Top 10 hit in 1992, this Tom Cochrane song had a popular cover
+            made for the Pixar film Cars.
           </Typography>
 
           <Button
@@ -304,7 +309,7 @@ const ScrumStandupMobile: React.FC = () => {
 
           {showEvansAnswer && (
             <>
-              <Typography mb="24px">Cuba</Typography>
+              <Typography mb="24px">Life is a Highway</Typography>
             </>
           )}
         </Paper>

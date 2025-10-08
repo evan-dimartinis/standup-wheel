@@ -152,7 +152,7 @@ const App: React.FC = () => {
     return EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
   };
 
-  return <V3 />;
+  return <V2 />;
 
   return (
     <Box
