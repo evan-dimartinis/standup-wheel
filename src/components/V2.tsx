@@ -90,7 +90,10 @@ const ScrumStandupMobile: React.FC = () => {
   const absenteeMembers: TeamMember[] = ["Sam Rozenfeld"];
 
   // Additional members to show in Posts section but not in team checkboxes above
-  const additionalPostMembers: TeamMember[] = ["George Uehling", "Gabe Szczepanek"];
+  const additionalPostMembers: TeamMember[] = [
+    "George Uehling",
+    "Gabe Szczepanek",
+  ];
 
   /* const allMembers: { member: TeamMember; petPeeve: string }[] = [
     { member: "George Uehling", petPeeve: "Left Lane Campers" },
@@ -147,7 +150,7 @@ const ScrumStandupMobile: React.FC = () => {
     "Gus Price": 5,
     "Jaime Riley": 8,
     "George Uehling": 4,
-    "Alex Blackson": 5,
+    "Alex Blackson": 6,
     "Maggie Smith": 2,
     "Christian Lopez": 7,
     "Gabe Szczepanek": 4,
