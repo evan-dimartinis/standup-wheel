@@ -69,10 +69,12 @@ const ScrumStandupMobile: React.FC = () => {
     | "Christian Lopez"
     | "Gabe Szczepanek"
     | "Sam Rozenfeld"
-    | "Vanessa Barker";
+    | "Vanessa Barker"
+    | "Rob Pisano"
+    | "Adam Grider";
 
   const teams: { [key: string]: TeamMember[] } = {
-    GUS: ["Gus Price"],
+    Infra: ["Gus Price", "Rob Pisano"],
     Core: [
       "Marissa Sileo",
       "Yosh Talwar",
@@ -80,12 +82,12 @@ const ScrumStandupMobile: React.FC = () => {
       "Sam Rozenfeld",
       "Jaime Riley",
     ],
-    RCM: ["Evan DiMartinis", "Camille Jwo", "Jonah Offitzer"],
-    Product: ["George Uehling", "Alex Blackson", "Vanessa Barker"],
+    RCM: ["Evan DiMartinis", "Camille Jwo", "Jonah Offitzer", "Adam Grider"],
+    Product: ["Alex Blackson", "Vanessa Barker"],
     Design: ["Maggie Smith", "Christian Lopez"],
   };
 
-  const absenteeMembers: TeamMember[] = [];
+  const absenteeMembers: TeamMember[] = ["Sam Rozenfeld"];
 
   /* const allMembers: { member: TeamMember; petPeeve: string }[] = [
     { member: "George Uehling", petPeeve: "Left Lane Campers" },
@@ -135,20 +137,21 @@ const ScrumStandupMobile: React.FC = () => {
   const scores: Record<TeamMember, number> = {
     "Evan DiMartinis": 0,
     "Camille Jwo": 6,
-    "Jonah Offitzer": 7,
-    "Yosh Talwar": 5,
-    "Phil Gray": 4,
-    "Marissa Sileo": 0,
-    "Gus Price": 3,
+    "Jonah Offitzer": 8,
+    "Yosh Talwar": 6,
+    "Phil Gray": 5,
+    "Marissa Sileo": 1,
+    "Gus Price": 5,
     "Jaime Riley": 8,
-    // "Craig O'Donnell": 4,
-    "George Uehling": 2,
+    "George Uehling": 4,
     "Alex Blackson": 5,
     "Maggie Smith": 2,
-    "Christian Lopez": 3,
+    "Christian Lopez": 7,
     "Gabe Szczepanek": 4,
-    "Sam Rozenfeld": 6,
-    "Vanessa Barker": 0,
+    "Sam Rozenfeld": 7,
+    "Vanessa Barker": 2,
+    "Rob Pisano": 0,
+    "Adam Grider": 0,
   };
 
   const [checked, setChecked] = useState<{ [key: string]: boolean }>({});
@@ -179,12 +182,12 @@ const ScrumStandupMobile: React.FC = () => {
       sx={{
         mb: 3,
         p: 2,
-        backgroundColor: "#ffffff",
-        border: "2px solid #0985F8",
+        backgroundColor: "#132f4c",
+        border: "2px solid #38bdf8",
         borderRadius: 2,
       }}
     >
-      <Typography variant="h6" gutterBottom sx={{ color: "#0985F8" }}>
+      <Typography variant="h6" gutterBottom sx={{ color: "#7dd3fc" }}>
         {teamName}
       </Typography>
       <Box display="flex" flexDirection="column" gap={1}>
@@ -201,14 +204,16 @@ const ScrumStandupMobile: React.FC = () => {
                   }
                 }}
                 sx={{
-                  color: "#0985F8",
-                  "&.Mui-checked": { color: "#0985F8" },
+                  color: "#7dd3fc",
+                  "&.Mui-checked": { color: "#7dd3fc" },
                 }}
               />
             }
             label={name}
             sx={{
-              backgroundColor: !!checked[name] ? "#E3F2FD" : "transparent",
+              backgroundColor: !!checked[name] ? "#1e3a52" : "transparent",
+              color: "#e0f2fe",
+              "& .MuiFormControlLabel-label": { color: "#e0f2fe" },
             }}
           />
         ))}
@@ -219,25 +224,25 @@ const ScrumStandupMobile: React.FC = () => {
   return (
     <Container
       // maxWidth="sm"
-      sx={{ py: 2, backgroundColor: "#D1E9FF", minHeight: "100vh" }}
+      sx={{ py: 2, backgroundColor: "#0a1929", minHeight: "100vh" }}
     >
       <Typography
         variant="h4"
         align="center"
-        sx={{ color: "#0985F8", mb: 2, fontWeight: "bold" }}
+        sx={{ color: "#7dd3fc", mb: 2, fontWeight: "bold" }}
       >
-        DEMOS DEMOS DEMOS
+        Good Morning Good Morning!
       </Typography>
 
       <Button
         variant="outlined"
         sx={{
-          color: "#0985F8",
-          borderColor: "#0985F8",
+          color: "#7dd3fc",
+          borderColor: "#7dd3fc",
           mb: 2,
           "&:hover": {
-            borderColor: "#0667C5",
-            backgroundColor: "#E3F2FD",
+            borderColor: "#38bdf8",
+            backgroundColor: "#1e3a52",
           },
         }}
         onClick={toggleQuestion}
@@ -248,12 +253,12 @@ const ScrumStandupMobile: React.FC = () => {
       <Button
         variant="outlined"
         sx={{
-          color: "#0985F8",
-          borderColor: "#0985F8",
+          color: "#7dd3fc",
+          borderColor: "#7dd3fc",
           mb: 2,
           "&:hover": {
-            borderColor: "#0667C5",
-            backgroundColor: "#E3F2FD",
+            borderColor: "#38bdf8",
+            backgroundColor: "#1e3a52",
           },
         }}
         onClick={toggleScoreboard}
@@ -263,10 +268,16 @@ const ScrumStandupMobile: React.FC = () => {
 
       {showScoreboard && (
         <Paper
-          sx={{ mb: 3, p: 2, backgroundColor: "#ffffff", borderRadius: 2 }}
+          sx={{
+            mb: 3,
+            p: 2,
+            backgroundColor: "#132f4c",
+            borderRadius: 2,
+            border: "2px solid #38bdf8",
+          }}
         >
-          <Typography variant="h6" sx={{ color: "#0985F8" }} gutterBottom>
-            Scoreboard
+          <Typography variant="h6" sx={{ color: "#7dd3fc" }} gutterBottom>
+            ❄️ Scoreboard ⛄
           </Typography>
           <Stack spacing={1}>
             {Object.entries(scores)
@@ -278,8 +289,8 @@ const ScrumStandupMobile: React.FC = () => {
                   justifyContent="space-between"
                   px={1}
                 >
-                  <Typography>{name}</Typography>
-                  <Typography fontWeight="bold" color="#0985F8">
+                  <Typography color="#e0f2fe">{name}</Typography>
+                  <Typography fontWeight="bold" color="#7dd3fc">
                     {score}
                   </Typography>
                 </Box>
@@ -290,11 +301,18 @@ const ScrumStandupMobile: React.FC = () => {
 
       {showQuestion && (
         <Paper
-          sx={{ mb: 3, p: 2, backgroundColor: "#ffffff", borderRadius: 2 }}
+          sx={{
+            mb: 3,
+            p: 2,
+            backgroundColor: "#132f4c",
+            borderRadius: 2,
+            border: "2px solid #38bdf8",
+          }}
         >
-          <Typography variant="h6" sx={{ color: "#0985F8" }} gutterBottom>
-            A Top 10 hit in 1992, this Tom Cochrane song had a popular cover
-            made for the Pixar film Cars.
+          <Typography variant="h6" sx={{ color: "#7dd3fc" }} gutterBottom>
+            The original Thanksgiving was held between the Pilgrims and This
+            Native American tribe, that resided in Southeastern Massachussets
+            and was led by Massasoit
           </Typography>
 
           <Button
@@ -302,6 +320,8 @@ const ScrumStandupMobile: React.FC = () => {
             variant="outlined"
             sx={{
               marginBottom: "8px",
+              color: "#7dd3fc",
+              borderColor: "#7dd3fc",
             }}
           >
             {showEvansAnswer ? "Hide" : "Show"} Answer
@@ -309,7 +329,9 @@ const ScrumStandupMobile: React.FC = () => {
 
           {showEvansAnswer && (
             <>
-              <Typography mb="24px">Life is a Highway</Typography>
+              <Typography mb="24px" color="#e0f2fe">
+                The Wompanoag
+              </Typography>
             </>
           )}
         </Paper>
@@ -365,8 +387,16 @@ const ScrumStandupMobile: React.FC = () => {
           .map(([teamName, members]) => renderTeam(teamName, members))}
       </Box>
 
-      <Paper sx={{ p: 2, backgroundColor: "#ffffff", borderRadius: 2, mb: 3 }}>
-        <Typography variant="h6" gutterBottom sx={{ color: "#0985F8" }}>
+      <Paper
+        sx={{
+          p: 2,
+          backgroundColor: "#132f4c",
+          borderRadius: 2,
+          mb: 3,
+          border: "2px solid #38bdf8",
+        }}
+      >
+        <Typography variant="h6" gutterBottom sx={{ color: "#7dd3fc" }}>
           Posts
         </Typography>
         <TextField
@@ -376,6 +406,15 @@ const ScrumStandupMobile: React.FC = () => {
           onChange={(e) => setNewTopic(e.target.value)}
           margin="normal"
           variant="outlined"
+          sx={{
+            "& .MuiOutlinedInput-root": {
+              color: "#e0f2fe",
+              "& fieldset": { borderColor: "#38bdf8" },
+              "&:hover fieldset": { borderColor: "#7dd3fc" },
+              "&.Mui-focused fieldset": { borderColor: "#38bdf8" },
+            },
+            "& .MuiInputLabel-root": { color: "#7dd3fc" },
+          }}
         />
         <Stack direction="row" spacing={1} rowGap={1} flexWrap="wrap">
           {Object.values(teams)
@@ -388,13 +427,13 @@ const ScrumStandupMobile: React.FC = () => {
                 onClick={() => handleToggleMember(name)}
                 sx={{
                   backgroundColor: selectedMembers.includes(name)
-                    ? "#0985F8"
-                    : "#E3F2FD",
-                  color: selectedMembers.includes(name) ? "#fff" : "#000",
+                    ? "#38bdf8"
+                    : "#1e3a52",
+                  color: "#e0f2fe",
                   "&:hover": {
                     backgroundColor: selectedMembers.includes(name)
-                      ? "#0667C5"
-                      : "#BBDEFB",
+                      ? "#7dd3fc"
+                      : "#2a5070",
                   },
                   mb: 1,
                 }}
@@ -406,8 +445,8 @@ const ScrumStandupMobile: React.FC = () => {
           variant="contained"
           sx={{
             mt: 2,
-            backgroundColor: "#0985F8",
-            "&:hover": { backgroundColor: "#0667C5" },
+            backgroundColor: "#38bdf8",
+            "&:hover": { backgroundColor: "#7dd3fc" },
           }}
           onClick={handleAddTopic}
         >
@@ -417,7 +456,10 @@ const ScrumStandupMobile: React.FC = () => {
         <Box mt={3}>
           {postStandupTopics.map((topic, idx) => (
             <Box key={idx} mb={2}>
-              <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+              <Typography
+                variant="subtitle1"
+                sx={{ fontWeight: "bold", color: "#e0f2fe" }}
+              >
                 {topic.topic}
               </Typography>
               <Stack direction="row" spacing={1} flexWrap="wrap">
@@ -426,7 +468,7 @@ const ScrumStandupMobile: React.FC = () => {
                     key={member}
                     label={member}
                     size="small"
-                    sx={{ backgroundColor: "#E3F2FD" }}
+                    sx={{ backgroundColor: "#1e3a52", color: "#e0f2fe" }}
                   />
                 ))}
               </Stack>
@@ -441,8 +483,8 @@ const ScrumStandupMobile: React.FC = () => {
         <Button
           variant="contained"
           sx={{
-            backgroundColor: "#0985F8",
-            "&:hover": { backgroundColor: "#0667C5" },
+            backgroundColor: "#38bdf8",
+            "&:hover": { backgroundColor: "#7dd3fc" },
           }}
           onClick={toggleWheel}
         >
@@ -454,11 +496,11 @@ const ScrumStandupMobile: React.FC = () => {
             variant="outlined"
             onClick={toggleScoreboard}
             sx={{
-              color: "#0985F8",
-              borderColor: "#0985F8",
+              color: "#7dd3fc",
+              borderColor: "#7dd3fc",
               "&:hover": {
-                borderColor: "#0667C5",
-                backgroundColor: "#E3F2FD",
+                borderColor: "#38bdf8",
+                backgroundColor: "#1e3a52",
               },
             }}
           >
@@ -467,8 +509,8 @@ const ScrumStandupMobile: React.FC = () => {
           <Button
             variant="contained"
             sx={{
-              backgroundColor: "#0985F8",
-              "&:hover": { backgroundColor: "#0667C5" },
+              backgroundColor: "#38bdf8",
+              "&:hover": { backgroundColor: "#7dd3fc" },
             }}
             onClick={onPlayAudio}
           >
@@ -484,7 +526,7 @@ const ScrumStandupMobile: React.FC = () => {
         />
       )}
 
-      <audio src="/assets/Catastrophe.mp3" id="sound-audio" />
+      <audio src="/assets/stirfry.mp3" id="sound-audio" />
     </Container>
   );
 };
