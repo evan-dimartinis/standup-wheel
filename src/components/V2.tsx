@@ -89,6 +89,9 @@ const ScrumStandupMobile: React.FC = () => {
 
   const absenteeMembers: TeamMember[] = ["Sam Rozenfeld"];
 
+  // Additional members to show in Posts section but not in team checkboxes above
+  const additionalPostMembers: TeamMember[] = ["George Uehling", "Gabe Szczepanek"];
+
   /* const allMembers: { member: TeamMember; petPeeve: string }[] = [
     { member: "George Uehling", petPeeve: "Left Lane Campers" },
     {
@@ -231,7 +234,7 @@ const ScrumStandupMobile: React.FC = () => {
         align="center"
         sx={{ color: "#7dd3fc", mb: 2, fontWeight: "bold" }}
       >
-        Good Morning Good Morning!
+        Welcome to Wednesday!
       </Typography>
 
       <Button
@@ -256,6 +259,7 @@ const ScrumStandupMobile: React.FC = () => {
           color: "#7dd3fc",
           borderColor: "#7dd3fc",
           mb: 2,
+          ml: 2,
           "&:hover": {
             borderColor: "#38bdf8",
             backgroundColor: "#1e3a52",
@@ -310,9 +314,7 @@ const ScrumStandupMobile: React.FC = () => {
           }}
         >
           <Typography variant="h6" sx={{ color: "#7dd3fc" }} gutterBottom>
-            The original Thanksgiving was held between the Pilgrims and This
-            Native American tribe, that resided in Southeastern Massachussets
-            and was led by Massasoit
+            Which U.S. state has/produces the most turkeys?
           </Typography>
 
           <Button
@@ -330,7 +332,8 @@ const ScrumStandupMobile: React.FC = () => {
           {showEvansAnswer && (
             <>
               <Typography mb="24px" color="#e0f2fe">
-                The Wompanoag
+                Minnesota (thanks, Gus!) produced 34 million turkeys in 2024,
+                accounting for 16% of the total U.S. turkey production.
               </Typography>
             </>
           )}
@@ -417,8 +420,8 @@ const ScrumStandupMobile: React.FC = () => {
           }}
         />
         <Stack direction="row" spacing={1} rowGap={1} flexWrap="wrap">
-          {Object.values(teams)
-            .flat()
+          {[...Object.values(teams).flat(), ...additionalPostMembers]
+            .sort()
             .map((name) => (
               <Chip
                 key={name}
