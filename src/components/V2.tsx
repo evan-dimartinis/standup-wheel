@@ -87,7 +87,7 @@ const ScrumStandupMobile: React.FC = () => {
     Design: ["Maggie Smith", "Christian Lopez"],
   };
 
-  const absenteeMembers: TeamMember[] = ["Sam Rozenfeld"];
+  const absenteeMembers: TeamMember[] = ["Vanessa Barker"];
 
   // Additional members to show in Posts section but not in team checkboxes above
   const additionalPostMembers: TeamMember[] = [
@@ -237,7 +237,7 @@ const ScrumStandupMobile: React.FC = () => {
         align="center"
         sx={{ color: "#7dd3fc", mb: 2, fontWeight: "bold" }}
       >
-        Welcome to Wednesday!
+        Wednesday.
       </Typography>
 
       <Button
@@ -317,7 +317,8 @@ const ScrumStandupMobile: React.FC = () => {
           }}
         >
           <Typography variant="h6" sx={{ color: "#7dd3fc" }} gutterBottom>
-            Which U.S. state has/produces the most turkeys?
+            Ghost, Nymeria, Summer, Shaggydog, Grey Wind, and Lady are all
+            examples of what type of creature?
           </Typography>
 
           <Button
@@ -335,8 +336,7 @@ const ScrumStandupMobile: React.FC = () => {
           {showEvansAnswer && (
             <>
               <Typography mb="24px" color="#e0f2fe">
-                Minnesota (thanks, Gus!) produced 34 million turkeys in 2024,
-                accounting for 16% of the total U.S. turkey production.
+                Direwolves
               </Typography>
             </>
           )}
