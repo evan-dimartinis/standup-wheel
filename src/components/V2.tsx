@@ -74,19 +74,27 @@ const ScrumStandupMobile: React.FC = () => {
     | "Adam Grider";
 
   const teams: { [key: string]: TeamMember[] } = {
-    Infra: ["Gus Price", "Rob Pisano"],
+    Platform: ["Gus Price", "Rob Pisano"],
     Core: [
       "Marissa Sileo",
       "Yosh Talwar",
       "Phil Gray",
       "Sam Rozenfeld",
       "Jaime Riley",
+      "Alex Blackson",
+      "Maggie Smith",
     ],
-    RCM: ["Evan DiMartinis", "Camille Jwo", "Jonah Offitzer", "Adam Grider"],
-    Product: ["Alex Blackson", "Vanessa Barker"],
-    Design: ["Maggie Smith", "Christian Lopez"],
+    RCM: [
+      "Evan DiMartinis",
+      "Camille Jwo",
+      "Jonah Offitzer",
+      "Adam Grider",
+      "Vanessa Barker",
+      "Christian Lopez",
+    ],
   };
 
+  const absenteeMembers: TeamMember[] = [];
   const absenteeMembers: TeamMember[] = [];
 
   // Additional members to show in Posts section but not in team checkboxes above
@@ -157,7 +165,7 @@ const ScrumStandupMobile: React.FC = () => {
     "Sam Rozenfeld": 7,
     "Vanessa Barker": 2,
     "Rob Pisano": 0,
-    "Adam Grider": 0,
+    "Adam Grider": 1,
   };
 
   const [checked, setChecked] = useState<{ [key: string]: boolean }>({});
