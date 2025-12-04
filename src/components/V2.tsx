@@ -87,7 +87,7 @@ const ScrumStandupMobile: React.FC = () => {
     Design: ["Maggie Smith", "Christian Lopez"],
   };
 
-  const absenteeMembers: TeamMember[] = ["Sam Rozenfeld"];
+  const absenteeMembers: TeamMember[] = [];
 
   // Additional members to show in Posts section but not in team checkboxes above
   const additionalPostMembers: TeamMember[] = [
@@ -149,7 +149,7 @@ const ScrumStandupMobile: React.FC = () => {
     "Marissa Sileo": 1,
     "Gus Price": 5,
     "Jaime Riley": 8,
-    "George Uehling": 4,
+    "George Uehling": 5,
     "Alex Blackson": 6,
     "Maggie Smith": 2,
     "Christian Lopez": 7,
@@ -237,7 +237,7 @@ const ScrumStandupMobile: React.FC = () => {
         align="center"
         sx={{ color: "#7dd3fc", mb: 2, fontWeight: "bold" }}
       >
-        Welcome to Wednesday!
+        THURSDAY!
       </Typography>
 
       <Button
@@ -317,7 +317,8 @@ const ScrumStandupMobile: React.FC = () => {
           }}
         >
           <Typography variant="h6" sx={{ color: "#7dd3fc" }} gutterBottom>
-            Which U.S. state has/produces the most turkeys?
+            Rittenhouse Square's namesake, inventor David Rittenhouse, is
+            credited with discovering the atmosphere of which planet?
           </Typography>
 
           <Button
@@ -335,8 +336,7 @@ const ScrumStandupMobile: React.FC = () => {
           {showEvansAnswer && (
             <>
               <Typography mb="24px" color="#e0f2fe">
-                Minnesota (thanks, Gus!) produced 34 million turkeys in 2024,
-                accounting for 16% of the total U.S. turkey production.
+                Venus
               </Typography>
             </>
           )}
